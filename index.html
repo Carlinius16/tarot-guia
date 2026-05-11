@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arcana — Guía Interactiva del Tarot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0d0a12;
+  --deep: #130e1f;
+  --void: #1a1228;
+  --veil: #241a35;
+  --mist: #2e2248;
+  --gold: #c8a84b;
+  --gold2: #e8c96a;
+  --gold3: #f5dfa0;
+  --silver: #a89cc0;
+  --pale: #e8dff5;
+  --cups-c: #3a7bd5;
+  --cups-g: #1e4a8a;
+  --pents-c: #c8821a;
+  --pents-g: #7a4a00;
+  --swords-c: #6a7aaa;
+  --swords-g: #2a3560;
+  --wands-c: #d45a20;
+  --wands-g: #7a2a00;
+  --major-c: #9a4ac8;
+  --major-g: #4a1a78;
+  --r: 8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body {
+  font-family: 'EB Garamond', Georgia, serif;
+  background: var(--ink);
+  color: var(--pale);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── STARFIELD ── */
+.stars {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(154,74,200,.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(58,123,213,.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 80%, rgba(200,168,75,.05) 0%, transparent 40%);
+}
+.stars::before,.stars::after {
+  content:''; position:absolute; inset:0;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 60%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 10%, rgba(255,255,255,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 40%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 5% 80%, rgba(200,168,75,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 90%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 55%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 15%, rgba(200,168,75,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 45%, rgba(255,255,255,.3) 0%, transparent 100%);
+}
+.stars::after {
+  background-image:
+    radial-gradient(1px 1px at 10% 35%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 15%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 75%, rgba(154,74,200,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 25%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 50%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 88%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 30%, rgba(255,255,255,.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 60% 65%, rgba(200,168,75,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 85%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 30%, rgba(255,255,255,.4) 0%, transparent 100%);
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,10,18,.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(200,168,75,.2);
+  padding: 0 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
+  height: 60px;
+}
+.nav-logo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: .95rem; color: var(--gold);
+  letter-spacing: .1em; white-space: nowrap;
+  text-shadow: 0 0 20px rgba(200,168,75,.4);
+}
+.nav-links {
+  display: flex; gap: .25rem; margin-left: .5rem;
+}
+.nav-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Cinzel', serif; font-size: .78rem;
+  color: var(--silver); padding: .4rem .8rem;
+  border-radius: var(--r); transition: all .2s;
+  letter-spacing: .05em;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: var(--gold); background: rgba(200,168,75,.1);
+}
+.nav-search {
+  flex: 1; max-width: 380px; margin-left: auto;
+  position: relative;
+}
+.nav-search input {
+  width: 100%; padding: .5rem 1rem .5rem 2.4rem;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(200,168,75,.25);
+  border-radius: 999px; color: var(--pale);
+  font-family: 'EB Garamond', serif; font-size: .9rem;
+  outline: none; transition: all .25s;
+}
+.nav-search input:focus {
+  border-color: var(--gold); background: rgba(255,255,255,.09);
+  box-shadow: 0 0 0 3px rgba(200,168,75,.1);
+}
+.nav-search input::placeholder { color: var(--silver); opacity: .7; }
+.search-icon {
+  position: absolute; left: .75rem; top: 50%;
+  transform: translateY(-50%); color: var(--silver); font-size: 1rem;
+  pointer-events: none;
+}
+
+/* ── SEARCH RESULTS ── */
+.search-results {
+  display: none; position: absolute; top: calc(100% + 8px);
+  left: 0; right: 0; background: var(--veil);
+  border: 1px solid rgba(200,168,75,.3); border-radius: var(--r);
+  max-height: 340px; overflow-y: auto; z-index: 200;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+}
+.search-results.open { display: block; }
+.search-item {
+  padding: .65rem 1rem; cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  transition: background .15s; display: flex; align-items: center; gap: .7rem;
+}
+.search-item:hover { background: rgba(200,168,75,.1); }
+.search-item:last-child { border-bottom: none; }
+.si-badge {
+  font-size: .65rem; padding: .15rem .4rem; border-radius: 4px;
+  font-family: 'Cinzel', serif; letter-spacing: .05em; white-space: nowrap;
+}
+.si-name { font-size: .9rem; color: var(--pale); }
+.si-en { font-size: .75rem; color: var(--silver); margin-top: .1rem; }
+.no-results { padding: 1.2rem; text-align: center; color: var(--silver); font-style: italic; }
+
+/* ── MAIN ── */
+main { position: relative; z-index: 1; }
+
+/* ── HERO ── */
+#section-home {
+  min-height: calc(100vh - 60px);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 3rem 1.5rem;
+}
+.hero-symbol {
+  font-size: 3rem; margin-bottom: 1rem;
+  animation: float 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(200,168,75,.5));
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.hero-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  color: var(--gold);
+  text-shadow: 0 0 40px rgba(200,168,75,.4), 0 0 80px rgba(200,168,75,.15);
+  line-height: 1.2; margin-bottom: .75rem;
+}
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--silver); font-style: italic;
+  margin-bottom: 2.5rem; letter-spacing: .05em;
+}
+.hero-divider {
+  width: 120px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 2.5rem;
+}
+.hero-cards {
+  display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 3rem;
+}
+.hero-card-btn {
+  background: none; border: none; cursor: pointer;
+  padding: 1.4rem 1.8rem; border-radius: var(--r);
+  border: 1px solid rgba(255,255,255,.1);
+  transition: all .3s; display: flex; flex-direction: column;
+  align-items: center; gap: .5rem; min-width: 130px;
+  position: relative; overflow: hidden;
+}
+.hero-card-btn::before {
+  content: ''; position: absolute; inset: 0; opacity: 0;
+  transition: opacity .3s;
+}
+.hero-card-btn:hover { transform: translateY(-4px); border-color: rgba(200,168,75,.4); }
+.hero-card-btn:hover::before { opacity: 1; }
+.hcb-cups::before  { background: linear-gradient(135deg, rgba(58,123,213,.2), transparent); }
+.hcb-pents::before { background: linear-gradient(135deg, rgba(200,130,26,.2), transparent); }
+.hcb-swords::before{ background: linear-gradient(135deg, rgba(106,122,170,.2), transparent); }
+.hcb-wands::before { background: linear-gradient(135deg, rgba(212,90,32,.2), transparent); }
+.hcb-major::before { background: linear-gradient(135deg, rgba(154,74,200,.2), transparent); }
+.hcb-icon { font-size: 2rem; }
+.hcb-label {
+  font-family: 'Cinzel', serif; font-size: .78rem;
+  letter-spacing: .08em; color: var(--pale);
+}
+.hcb-count { font-size: .7rem; color: var(--silver); }
+
+/* ── SECTION CARDS ── */
+#section-cards { padding: 2rem 1.5rem 4rem; }
+.section-header {
+  text-align: center; margin-bottom: 2rem;
+}
+.section-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  color: var(--gold); margin-bottom: .5rem;
+}
+.section-sub { color: var(--silver); font-style: italic; font-size: 1rem; }
+
+/* ── CATEGORY TABS ── */
+.cat-tabs {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  justify-content: center; margin-bottom: 2rem;
+}
+.cat-tab {
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 999px; padding: .5rem 1.2rem;
+  font-family: 'Cinzel', serif; font-size: .78rem;
+  letter-spacing: .06em; cursor: pointer; color: var(--silver);
+  transition: all .25s; white-space: nowrap;
+}
+.cat-tab:hover { color: var(--pale); border-color: rgba(200,168,75,.3); }
+.cat-tab.active { color: var(--ink); font-weight: 600; border-color: transparent; }
+.cat-tab[data-cat="cups"].active  { background: var(--cups-c); }
+.cat-tab[data-cat="pents"].active { background: var(--pents-c); }
+.cat-tab[data-cat="swords"].active{ background: var(--swords-c); }
+.cat-tab[data-cat="wands"].active { background: var(--wands-c); }
+.cat-tab[data-cat="major"].active { background: var(--major-c); }
+.cat-tab[data-cat="all"].active   { background: var(--gold); }
+
+/* ── CARDS GRID ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1rem; max-width: 1300px; margin: 0 auto;
+}
+.card-tile {
+  background: var(--void);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--r); padding: 1.1rem;
+  cursor: pointer; transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.card-tile::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; border-radius: var(--r) var(--r) 0 0;
+}
+.card-tile[data-cat="cups"]::before  { background: linear-gradient(90deg, var(--cups-g), var(--cups-c)); }
+.card-tile[data-cat="pents"]::before { background: linear-gradient(90deg, var(--pents-g), var(--pents-c)); }
+.card-tile[data-cat="swords"]::before{ background: linear-gradient(90deg, var(--swords-g), var(--swords-c)); }
+.card-tile[data-cat="wands"]::before { background: linear-gradient(90deg, var(--wands-g), var(--wands-c)); }
+.card-tile[data-cat="major"]::before { background: linear-gradient(90deg, var(--major-g), var(--major-c)); }
+.card-tile:hover {
+  transform: translateY(-3px);
+  border-color: rgba(200,168,75,.3);
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
+}
+.ct-symbol { font-size: 1.5rem; margin-bottom: .4rem; }
+.ct-num {
+  font-family: 'Cinzel', serif; font-size: .65rem;
+  color: var(--silver); letter-spacing: .08em; margin-bottom: .2rem;
+}
+.ct-name {
+  font-family: 'Cinzel', serif; font-size: .85rem;
+  color: var(--pale); line-height: 1.3; margin-bottom: .2rem;
+}
+.ct-en { font-size: .72rem; color: var(--silver); font-style: italic; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.8); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; padding: 1rem;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--deep);
+  border: 1px solid rgba(200,168,75,.25);
+  border-radius: 12px; max-width: 680px; width: 100%;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 30px 80px rgba(0,0,0,.8), 0 0 0 1px rgba(200,168,75,.1);
+  animation: modalIn .25s ease;
+}
+@keyframes modalIn {
+  from { opacity:0; transform: scale(.95) translateY(10px); }
+  to   { opacity:1; transform: scale(1)  translateY(0); }
+}
+.modal-header {
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: rgba(255,255,255,.07); border: none;
+  color: var(--silver); width: 32px; height: 32px;
+  border-radius: 50%; cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.modal-close:hover { background: rgba(255,255,255,.15); color: var(--pale); }
+.modal-cat-badge {
+  font-family: 'Cinzel', serif; font-size: .65rem;
+  letter-spacing: .1em; padding: .2rem .6rem; border-radius: 4px;
+  display: inline-block; margin-bottom: .6rem;
+}
+.modal-num {
+  font-family: 'Cinzel', serif; font-size: .75rem;
+  color: var(--silver); letter-spacing: .06em;
+}
+.modal-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.3rem, 3vw, 1.8rem); color: var(--gold);
+  margin: .25rem 0 .2rem;
+}
+.modal-en { font-style: italic; color: var(--silver); font-size: .95rem; }
+.modal-element { font-size: .82rem; color: var(--silver); margin-top: .4rem; }
+.modal-body { padding: 1.2rem 1.5rem; }
+.modal-desc {
+  font-size: 1rem; line-height: 1.7; color: var(--pale);
+  margin-bottom: 1.2rem; font-style: italic;
+  padding: .8rem 1rem; background: rgba(255,255,255,.03);
+  border-left: 2px solid var(--gold); border-radius: 0 var(--r) var(--r) 0;
+}
+.meaning-section { margin-bottom: 1.2rem; }
+.meaning-label {
+  font-family: 'Cinzel', serif; font-size: .78rem;
+  letter-spacing: .1em; margin-bottom: .6rem;
+  display: flex; align-items: center; gap: .5rem;
+}
+.meaning-label.up { color: #7cc87c; }
+.meaning-label.dn { color: #e07070; }
+.meaning-list { list-style: none; display: flex; flex-direction: column; gap: .4rem; }
+.meaning-list li {
+  padding: .4rem .7rem; border-radius: 6px;
+  font-size: .9rem; line-height: 1.5;
+  display: flex; gap: .5rem;
+}
+.meaning-list.up-list li {
+  background: rgba(124,200,124,.07); border-left: 2px solid rgba(124,200,124,.4);
+}
+.meaning-list.dn-list li {
+  background: rgba(224,112,112,.07); border-left: 2px solid rgba(224,112,112,.4);
+}
+.how-section {
+  margin-top: 1.2rem;
+  padding: 1rem; background: rgba(200,168,75,.05);
+  border: 1px solid rgba(200,168,75,.15); border-radius: var(--r);
+}
+.how-title {
+  font-family: 'Cinzel', serif; font-size: .78rem;
+  color: var(--gold); letter-spacing: .1em; margin-bottom: .8rem;
+}
+.how-contexts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .6rem; }
+.how-ctx {
+  background: rgba(255,255,255,.04); border-radius: 6px;
+  padding: .6rem .8rem;
+}
+.how-ctx-label {
+  font-family: 'Cinzel', serif; font-size: .65rem;
+  letter-spacing: .08em; color: var(--gold); margin-bottom: .3rem;
+}
+.how-ctx-text { font-size: .82rem; line-height: 1.5; color: var(--silver); }
+
+/* ── PRACTICE ── */
+#section-practice { padding: 2rem 1.5rem 4rem; max-width: 900px; margin: 0 auto; }
+.practice-header { text-align: center; margin-bottom: 2rem; }
+.practice-config {
+  background: var(--void); border: 1px solid rgba(200,168,75,.2);
+  border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;
+}
+.config-title {
+  font-family: 'Cinzel', serif; font-size: .9rem;
+  color: var(--gold); letter-spacing: .08em; margin-bottom: 1rem;
+}
+.config-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.config-group label {
+  display: block; font-family: 'Cinzel', serif; font-size: .7rem;
+  color: var(--silver); letter-spacing: .08em; margin-bottom: .4rem;
+}
+.config-select {
+  width: 100%; background: rgba(255,255,255,.06);
+  border: 1px solid rgba(200,168,75,.25); border-radius: 6px;
+  color: var(--pale); font-family: 'EB Garamond', serif; font-size: .9rem;
+  padding: .5rem .8rem; outline: none; cursor: pointer;
+}
+.config-select:focus { border-color: var(--gold); }
+.config-select option { background: var(--deep); }
+.start-btn {
+  display: block; margin: 1.2rem auto 0;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: var(--ink); border: none; border-radius: 999px;
+  padding: .75rem 2.5rem; font-family: 'Cinzel', serif;
+  font-size: .9rem; font-weight: 700; letter-spacing: .1em;
+  cursor: pointer; transition: all .25s;
+}
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(200,168,75,.4);
+}
+
+/* ── QUIZ AREA ── */
+.quiz-area { display: none; }
+.quiz-area.active { display: block; }
+.quiz-progress {
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+}
+.progress-bar {
+  flex: 1; height: 6px; background: rgba(255,255,255,.1);
+  border-radius: 999px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2));
+  border-radius: 999px; transition: width .4s ease;
+}
+.progress-text {
+  font-family: 'Cinzel', serif; font-size: .75rem; color: var(--silver);
+  white-space: nowrap;
+}
+.quiz-score {
+  font-family: 'Cinzel', serif; font-size: .75rem; color: var(--gold);
+  white-space: nowrap;
+}
+.quiz-card {
+  background: var(--void); border: 1px solid rgba(200,168,75,.2);
+  border-radius: 12px; padding: 1.8rem; margin-bottom: 1.2rem;
+  text-align: center;
+}
+.quiz-mode-label {
+  font-family: 'Cinzel', serif; font-size: .65rem;
+  color: var(--silver); letter-spacing: .1em; margin-bottom: 1rem;
+}
+.quiz-question {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.1rem, 3vw, 1.5rem); color: var(--gold);
+  margin-bottom: .5rem; line-height: 1.3;
+}
+.quiz-sub { font-style: italic; color: var(--silver); font-size: .9rem; margin-bottom: .5rem; }
+.quiz-pos-badge {
+  display: inline-block; padding: .2rem .7rem; border-radius: 999px;
+  font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .08em;
+  margin-top: .4rem;
+}
+.quiz-pos-badge.up { background: rgba(124,200,124,.15); color: #7cc87c; }
+.quiz-pos-badge.dn { background: rgba(224,112,112,.15); color: #e07070; }
+.quiz-meaning {
+  font-size: 1rem; line-height: 1.6; color: var(--pale);
+  font-style: italic; margin-top: .5rem;
+  background: rgba(255,255,255,.03); padding: .8rem 1rem; border-radius: var(--r);
+}
+.quiz-options {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: .75rem; margin-top: 1rem;
+}
+.quiz-opt {
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--r); padding: .75rem 1rem; cursor: pointer;
+  font-family: 'Cinzel', serif; font-size: .8rem; color: var(--pale);
+  transition: all .2s; text-align: left; line-height: 1.4;
+}
+.quiz-opt:hover:not(:disabled) {
+  background: rgba(200,168,75,.1); border-color: rgba(200,168,75,.4);
+}
+.quiz-opt.correct { background: rgba(124,200,124,.15)!important; border-color: #7cc87c!important; color: #7cc87c; }
+.quiz-opt.wrong   { background: rgba(224,112,112,.15)!important; border-color: #e07070!important; color: #e07070; }
+.quiz-opt:disabled { cursor: default; }
+.quiz-feedback {
+  text-align: center; padding: 1rem; border-radius: var(--r);
+  margin-bottom: 1rem; font-family: 'Cinzel', serif; font-size: .85rem;
+  display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: rgba(124,200,124,.1); color: #7cc87c; }
+.quiz-feedback.wrong-fb   { background: rgba(224,112,112,.1); color: #e07070; }
+.next-btn {
+  display: none; margin: 0 auto;
+  background: rgba(200,168,75,.15); border: 1px solid rgba(200,168,75,.4);
+  color: var(--gold); border-radius: 999px; padding: .6rem 2rem;
+  font-family: 'Cinzel', serif; font-size: .82rem; letter-spacing: .08em;
+  cursor: pointer; transition: all .2s;
+}
+.next-btn.show { display: block; }
+.next-btn:hover { background: rgba(200,168,75,.25); }
+
+/* ── RESULTS ── */
+.results-area { display: none; text-align: center; }
+.results-area.active { display: block; }
+.results-score {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(2rem, 6vw, 3.5rem); color: var(--gold); margin: 1rem 0;
+}
+.results-msg { font-size: 1.1rem; color: var(--silver); font-style: italic; margin-bottom: 1.5rem; }
+.results-missed { text-align: left; margin: 1.5rem 0; }
+.results-missed-title {
+  font-family: 'Cinzel', serif; font-size: .82rem;
+  color: var(--silver); letter-spacing: .08em; margin-bottom: .8rem;
+}
+.missed-list { display: flex; flex-direction: column; gap: .4rem; }
+.missed-item {
+  padding: .5rem .8rem; background: rgba(224,112,112,.07);
+  border: 1px solid rgba(224,112,112,.2); border-radius: 6px;
+  font-size: .88rem; color: var(--pale);
+}
+.results-btns { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+.res-btn {
+  border-radius: 999px; padding: .65rem 1.8rem;
+  font-family: 'Cinzel', serif; font-size: .82rem; letter-spacing: .08em;
+  cursor: pointer; transition: all .2s; border: none;
+}
+.res-btn.primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold2)); color: var(--ink); font-weight: 700;
+}
+.res-btn.secondary {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); color: var(--pale);
+}
+.res-btn:hover { transform: translateY(-2px); }
+
+/* HIDDEN */
+.hidden { display: none !important; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--mist); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--silver); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .nav-logo { font-size: .78rem; }
+  .nav-links { display: none; }
+  .quiz-options { grid-template-columns: 1fr; }
+  .hero-cards { gap: .8rem; }
+  .hero-card-btn { min-width: 100px; padding: 1rem 1.2rem; }
+  .modal { max-height: 95vh; }
+}
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">✦ ARCANA</div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showSection('home')">Inicio</button>
+    <button class="nav-btn" onclick="showSection('cards')">Cartas</button>
+    <button class="nav-btn" onclick="showSection('practice')">Práctica</button>
+  </div>
+  <div class="nav-search">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="searchInput" placeholder="Buscar carta... The Fool, Copas, Muerte..." autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</nav>
+
+<main>
+<!-- ═══════════════════════════ HOME ═══════════════════════════ -->
+<section id="section-home">
+  <div class="hero-symbol">✦</div>
+  <h1 class="hero-title">ARCANA</h1>
+  <p class="hero-sub">Guía Interactiva del Tarot · 78 Cartas Completas</p>
+  <div class="hero-divider"></div>
+  <div class="hero-cards">
+    <button class="hero-card-btn hcb-cups" onclick="goToCategory('cups')">
+      <span class="hcb-icon">♥</span>
+      <span class="hcb-label">COPAS</span>
+      <span class="hcb-count">14 cartas · Cups</span>
+    </button>
+    <button class="hero-card-btn hcb-pents" onclick="goToCategory('pents')">
+      <span class="hcb-icon">♦</span>
+      <span class="hcb-label">OROS</span>
+      <span class="hcb-count">14 cartas · Pentacles</span>
+    </button>
+    <button class="hero-card-btn hcb-swords" onclick="goToCategory('swords')">
+      <span class="hcb-icon">♠</span>
+      <span class="hcb-label">ESPADAS</span>
+      <span class="hcb-count">14 cartas · Swords</span>
+    </button>
+    <button class="hero-card-btn hcb-wands" onclick="goToCategory('wands')">
+      <span class="hcb-icon">♣</span>
+      <span class="hcb-label">BASTOS</span>
+      <span class="hcb-count">14 cartas · Wands</span>
+    </button>
+    <button class="hero-card-btn hcb-major" onclick="goToCategory('major')">
+      <span class="hcb-icon">★</span>
+      <span class="hcb-label">ARCANOS</span>
+      <span class="hcb-count">22 cartas · Major</span>
+    </button>
+  </div>
+  <button class="start-btn" onclick="showSection('practice')">⚑ Iniciar Práctica</button>
+</section>
+
+<!-- ═══════════════════════════ CARDS ═══════════════════════════ -->
+<section id="section-cards" class="hidden">
+  <div class="section-header">
+    <h2 class="section-title">Las 78 Cartas</h2>
+    <p class="section-sub">Selecciona una carta para ver su interpretación completa</p>
+  </div>
+  <div class="cat-tabs">
+    <button class="cat-tab active" data-cat="all" onclick="filterCat('all')">✦ Todas (78)</button>
+    <button class="cat-tab" data-cat="major" onclick="filterCat('major')">★ Arcanos Mayores</button>
+    <button class="cat-tab" data-cat="cups" onclick="filterCat('cups')">♥ Copas</button>
+    <button class="cat-tab" data-cat="pents" onclick="filterCat('pents')">♦ Oros</button>
+    <button class="cat-tab" data-cat="swords" onclick="filterCat('swords')">♠ Espadas</button>
+    <button class="cat-tab" data-cat="wands" onclick="filterCat('wands')">♣ Bastos</button>
+  </div>
+  <div class="cards-grid" id="cardsGrid"></div>
+</section>
+
+<!-- ═══════════════════════════ PRACTICE ═══════════════════════════ -->
+<section id="section-practice" class="hidden">
+  <div class="practice-header">
+    <h2 class="section-title">Zona de Práctica</h2>
+    <p class="section-sub">Pon a prueba tu conocimiento del Tarot</p>
+  </div>
+
+  <div class="practice-config" id="practiceConfig">
+    <div class="config-title">⚙ Configurar Examen</div>
+    <div class="config-grid">
+      <div class="config-group">
+        <label>CATEGORÍA</label>
+        <select class="config-select" id="cfgCat">
+          <option value="all">Todas las cartas (78)</option>
+          <option value="major">Solo Arcanos Mayores</option>
+          <option value="cups">Solo Copas</option>
+          <option value="pents">Solo Oros</option>
+          <option value="swords">Solo Espadas</option>
+          <option value="wands">Solo Bastos</option>
+        </select>
+      </div>
+      <div class="config-group">
+        <label>POSICIÓN</label>
+        <select class="config-select" id="cfgPos">
+          <option value="both">Al derecho e invertida</option>
+          <option value="up">Solo al derecho</option>
+          <option value="dn">Solo invertida</option>
+        </select>
+      </div>
+      <div class="config-group">
+        <label>MODO</label>
+        <select class="config-select" id="cfgMode">
+          <option value="name2meaning">Nombre → Significado</option>
+          <option value="meaning2name">Significado → Nombre</option>
+        </select>
+      </div>
+      <div class="config-group">
+        <label>DIFICULTAD</label>
+        <select class="config-select" id="cfgDiff">
+          <option value="3">Fácil (3 opciones)</option>
+          <option value="4" selected>Medio (4 opciones)</option>
+          <option value="6">Difícil (6 opciones)</option>
+        </select>
+      </div>
+      <div class="config-group">
+        <label>PREGUNTAS</label>
+        <select class="config-select" id="cfgQty">
+          <option value="10">10 preguntas</option>
+          <option value="20" selected>20 preguntas</option>
+          <option value="30">30 preguntas</option>
+          <option value="all">Todas</option>
+        </select>
+      </div>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">✦ Comenzar Examen</button>
+  </div>
+
+  <div class="quiz-area" id="quizArea">
+    <div class="quiz-progress">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-text" id="progressText">1 / 20</span>
+      <span class="quiz-score" id="quizScore">✦ 0</span>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-mode-label" id="quizModeLabel"></div>
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-sub" id="quizSubQ"></div>
+      <div class="quiz-pos-badge" id="quizPosBadge"></div>
+      <div class="quiz-meaning hidden" id="quizMeaning"></div>
+    </div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Siguiente →</button>
+  </div>
+
+  <div class="results-area" id="resultsArea">
+    <div class="hero-symbol">✦</div>
+    <div class="results-score" id="resultsScore"></div>
+    <div class="results-msg" id="resultsMsg"></div>
+    <div class="results-missed" id="resultsMissed"></div>
+    <div class="results-btns">
+      <button class="res-btn primary" onclick="startQuiz()">↺ Repetir Examen</button>
+      <button class="res-btn secondary" onclick="retryMissed()">⚑ Solo las Falladas</button>
+      <button class="res-btn secondary" onclick="showSection('cards')">↗ Ver Cartas</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+      <div class="modal-cat-badge" id="modalBadge"></div>
+      <div class="modal-num" id="modalNum"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-en" id="modalEn"></div>
+      <div class="modal-element" id="modalElement"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="meaning-section">
+        <div class="meaning-label up">⬆ AL DERECHO · UPRIGHT</div>
+        <ul class="meaning-list up-list" id="modalUp"></ul>
+      </div>
+      <div class="meaning-section">
+        <div class="meaning-label dn">⬇ INVERTIDA · REVERSED</div>
+        <ul class="meaning-list dn-list" id="modalDn"></ul>
+      </div>
+      <div class="how-section">
+        <div class="how-title">📖 ¿CÓMO LEER ESTA CARTA?</div>
+        <div class="how-contexts" id="modalHow"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA — 78 CARDS
+// ═══════════════════════════════════════════════════════════════
+const CARDS = [
+// ── ARCANOS MAYORES ──────────────────────────────────────────
+{id:'m0', cat:'major', num:'0', symbol:'☽',
+ es:'El Loco', en:'The Fool', element:'Aire · Urano',
+ desc:'El alma en estado puro, lista para aventurarse en lo desconocido sin miedo. El inicio de todos los viajes.',
+ up:['Nuevos comienzos y aventuras inesperadas','Espíritu libre, espontaneidad y optimismo','Fe ciega en el universo','Creatividad sin límites','Disposición a tomar riesgos'],
+ dn:['Imprudencia y decisiones apresuradas','Irresponsabilidad o inmadurez','Miedo a lo desconocido','Ingenuidad que lleva a engaños','Necesidad de reflexionar antes de actuar'],
+ how:{amor:'Una nueva relación llena de emoción y frescura, sin cargas del pasado.',trabajo:'Momento de lanzar ese proyecto o dar el salto profesional.',salud:'Cambio de hábitos radical y liberador.',espiritual:'Apertura total al camino espiritual sin condicionamientos.'}},
+
+{id:'m1', cat:'major', num:'I', symbol:'☿',
+ es:'El Mago', en:'The Magician', element:'Aire · Mercurio',
+ desc:'La voluntad creadora y el poder de manifestar deseos en la realidad usando todas las herramientas disponibles.',
+ up:['Manifestación de deseos y objetivos','Habilidad, talento y destreza personal','Voluntad firme y concentración','Poder de comunicación persuasiva','Usar los recursos con maestría'],
+ dn:['Manipulación o uso deshonesto del poder','Talentos desperdiciados','Falta de concentración','Engaños o autoengaño','Bloqueos para manifestar lo deseado'],
+ how:{amor:'Tomar la iniciativa y manifestar el amor que deseas atraer.',trabajo:'Tienes todas las herramientas: úsalas con confianza.',salud:'Tu voluntad es la clave para sanar y mejorar.',espiritual:'El poder de crear tu realidad está en tus manos.'}},
+
+{id:'m2', cat:'major', num:'II', symbol:'☽',
+ es:'La Sacerdotisa', en:'The High Priestess', element:'Agua · Luna',
+ desc:'Guardiana del conocimiento esotérico y la intuición profunda. Invita a confiar en la voz interior.',
+ up:['Intuición poderosa y sabiduría interior','Misterio y conocimiento oculto','Paciencia y espera del momento oportuno','Conexión con el subconsciente','Independencia emocional'],
+ dn:['Ignorar la voz interior','Secretos que salen a la luz inoportunamente','Represión emocional','Superficialidad','Información oculta que perjudica'],
+ how:{amor:'Confía en tu intuición sobre esta relación, aunque no tengas certezas.',trabajo:'Hay información que aún no tienes; espera antes de decidir.',salud:'Tu cuerpo te está enviando mensajes, escúchalo.',espiritual:'Profundiza en tu práctica meditativa y el silencio interior.'}},
+
+{id:'m3', cat:'major', num:'III', symbol:'♀',
+ es:'La Emperatriz', en:'The Empress', element:'Tierra · Venus',
+ desc:'La Gran Madre, símbolo de amor, belleza, abundancia y el poder creativo de la naturaleza.',
+ up:['Abundancia material y prosperidad','Fertilidad, creatividad y maternidad','Amor incondicional y sensualidad','Conexión con la naturaleza','Crecimiento y florecimiento'],
+ dn:['Bloqueos creativos o esterilidad','Dependencia emocional','Excesos materiales','Problemas con figura materna','Escasez o dificultades económicas'],
+ how:{amor:'Período fértil para el amor: nurtúralo con cuidado y ternura.',trabajo:'Tu creatividad florece; es momento de dar a luz proyectos.',salud:'Cuidado del cuerpo con amor y conexión con la naturaleza.',espiritual:'La diosa interior te llama: honra tu feminidad y creatividad.'}},
+
+{id:'m4', cat:'major', num:'IV', symbol:'♂',
+ es:'El Emperador', en:'The Emperor', element:'Fuego · Aries',
+ desc:'El arquetipo del padre y el líder. Su fuerza radica en la razón, la disciplina y la voluntad.',
+ up:['Autoridad, liderazgo y poder legítimo','Estructura, orden y estabilidad','Disciplina y determinación','Protección y responsabilidad','Éxito en negocios o asuntos legales'],
+ dn:['Abuso de autoridad o tiranía','Rigidez extrema','Problemas con figuras paternas','Falta de control','Inseguridad disfrazada de dominancia'],
+ how:{amor:'Establece límites claros y estructura en tu relación.',trabajo:'Toma el mando y ejerce tu autoridad con responsabilidad.',salud:'Disciplina y rutinas sólidas son la clave ahora.',espiritual:'Integra el arquetipo del padre sabio y la ley universal.'}},
+
+{id:'m5', cat:'major', num:'V', symbol:'♉',
+ es:'El Hierofante', en:'The Hierophant', element:'Tierra · Tauro',
+ desc:'El guía espiritual y custodio de la tradición. Sabiduría transmitida e instituciones.',
+ up:['Tradición, religión y sistemas de creencias','Educación formal y aprendizaje guiado','Consejo espiritual o de mentor','Rituales y ceremonias','Conformidad con normas beneficiosas'],
+ dn:['Rebeldía contra normas o dogmas','Hipocresía en instituciones','Creencias limitantes','Necesidad de tu propio camino espiritual','Rechazo a la guía externa'],
+ how:{amor:'El compromiso formal o la bendición familiar puede ser importante.',trabajo:'Sigue los procesos establecidos; no es momento de improvisar.',salud:'Consulta a un especialista de confianza.',espiritual:'Un maestro o tradición espiritual puede guiarte en este momento.'}},
+
+{id:'m6', cat:'major', num:'VI', symbol:'♊',
+ es:'Los Enamorados', en:'The Lovers', element:'Aire · Géminis',
+ desc:'La elección entre el corazón y la razón, las uniones significativas y la armonía entre opuestos.',
+ up:['Amor profundo y conexión genuina','Decisiones tomadas con el corazón','Armonía en relaciones','Alineación de valores','Elecciones que definen la vida'],
+ dn:['Desequilibrio o conflictos en la relación','Decisiones precipitadas por pasión','Valores en conflicto','Infidelidad o separación','Indecisión que genera estancamiento'],
+ how:{amor:'Una relación transformadora o una decisión importante en el amor.',trabajo:'Elige la carrera o proyecto que realmente te apasiona.',salud:'Armoniza tu mente y tu cuerpo como complementos.',espiritual:'La unión de opuestos internos lleva a la totalidad.'}},
+
+{id:'m7', cat:'major', num:'VII', symbol:'♋',
+ es:'El Carro', en:'The Chariot', element:'Agua · Cáncer',
+ desc:'La voluntad triunfante, el control sobre fuerzas opuestas y la determinación de avanzar a pesar de los obstáculos.',
+ up:['Victoria, triunfo y éxito merecido','Determinación, disciplina y autocontrol','Avance decidido hacia los objetivos','Dominio de fuerzas opuestas','Viajes o movimientos importantes'],
+ dn:['Pérdida de control o dirección','Arrogancia que lleva a la derrota','Agresividad sin rumbo','Obstáculos insuperables','Falta de disciplina o enfoque'],
+ how:{amor:'Toma el control de tu vida amorosa con determinación y dirección.',trabajo:'Avanza con fuerza; la victoria está al alcance.',salud:'La disciplina y el ejercicio te llevarán a la meta.',espiritual:'Dirige tu voluntad hacia el crecimiento espiritual sostenido.'}},
+
+{id:'m8', cat:'major', num:'VIII', symbol:'♌',
+ es:'La Fuerza', en:'Strength', element:'Fuego · Leo',
+ desc:'La fuerza interior: el coraje suave, la compasión que doma la bestia y la paciencia que supera todo desafío.',
+ up:['Fortaleza interior y valentía tranquila','Dominio de emociones e instintos','Compasión y paciencia infinita','Perseverancia ante la adversidad','Influencia positiva por el ejemplo'],
+ dn:['Debilidad, inseguridad o cobardía','Sometimiento a impulsos negativos','Falta de autoestima','Uso de fuerza bruta','Miedos internos que paralizan'],
+ how:{amor:'La paciencia y la comprensión profunda fortalecen el vínculo.',trabajo:'Tu resiliencia y carácter serán tus mejores herramientas.',salud:'La sanación requiere gentileza contigo mismo, no dureza.',espiritual:'Doma tu ego con amor; la fuerza más grande es la compasión.'}},
+
+{id:'m9', cat:'major', num:'IX', symbol:'♍',
+ es:'El Ermitaño', en:'The Hermit', element:'Tierra · Virgo',
+ desc:'El retiro introspectivo, la búsqueda interior de verdad y la luz de la sabiduría compartida.',
+ up:['Introspección profunda y reflexión','Búsqueda espiritual solitaria','Sabiduría ganada por experiencia','Necesidad de tiempo personal','Guía o mentor que ilumina'],
+ dn:['Aislamiento no saludable','Rechazo a la guía ajena','Introversión excesiva','Pérdida de contacto con la realidad','Negación a compartir el conocimiento'],
+ how:{amor:'Un período de reflexión sobre lo que realmente quieres en el amor.',trabajo:'La respuesta está dentro de ti; necesitas soledad para encontrarla.',salud:'El retiro y el silencio son medicina ahora.',espiritual:'El viaje interior es la práctica más valiosa en este momento.'}},
+
+{id:'m10', cat:'major', num:'X', symbol:'♃',
+ es:'La Rueda de la Fortuna', en:'Wheel of Fortune', element:'Fuego · Júpiter',
+ desc:'Los ciclos inevitables de la vida, el destino y la naturaleza cíclica de todo lo que existe.',
+ up:['Cambios favorables y giros del destino','Buena suerte y oportunidades inesperadas','Karma positivo y sincronías','Ciclos que se completan favorablemente','Expansión y crecimiento'],
+ dn:['Mala suerte o rachas desfavorables','Resistencia al cambio inevitable','Karma negativo','Ciclos que se repiten sin aprender','Sensación de no controlar el destino'],
+ how:{amor:'Un giro inesperado en tu vida amorosa que cambiará todo.',trabajo:'La rueda gira a tu favor; aprovecha el momento de expansión.',salud:'Los ciclos naturales del cuerpo requieren atención.',espiritual:'Todo fluye; suéltate al río de la vida y confía.'}},
+
+{id:'m11', cat:'major', num:'XI', symbol:'♎',
+ es:'La Justicia', en:'Justice', element:'Aire · Libra',
+ desc:'La verdad objetiva, el equilibrio kármico y las consecuencias inevitables de cada acción.',
+ up:['Justicia, equidad y verdad objetiva','Karma: cada acción tiene consecuencias','Asuntos legales resueltos favorablemente','Necesidad de honestidad','Equilibrio y decisiones justas'],
+ dn:['Injusticia, corrupción o deshonestidad','Problemas legales o veredictos adversos','Evasión de responsabilidades','Desequilibrio en relaciones','Karma pendiente por resolver'],
+ how:{amor:'Equilibra el dar y el recibir en tu relación con honestidad.',trabajo:'Los asuntos legales o contractuales requieren tu atención ahora.',salud:'El equilibrio entre todos los aspectos de tu vida es clave.',espiritual:'La ley del karma obra; actúa con integridad en todo momento.'}},
+
+{id:'m12', cat:'major', num:'XII', symbol:'♆',
+ es:'El Colgado', en:'The Hanged Man', element:'Agua · Neptuno',
+ desc:'La pausa voluntaria para ver el mundo desde otra perspectiva. A veces la inacción es la estrategia más sabia.',
+ up:['Pausa necesaria para ganar perspectiva','Sacrificio consciente para un bien mayor','Entrega, soltar el control','Iluminación a través del sufrimiento','Cambio de paradigma radical'],
+ dn:['Resistencia al cambio o a soltar','Martirio innecesario o victimismo','Estancamiento por indecisión','Sacrificios que no producen frutos','Falta de perspectiva'],
+ how:{amor:'Pausa y observa la relación desde un ángulo completamente nuevo.',trabajo:'No hagas nada por ahora; la espera estratégica es la clave.',salud:'El descanso profundo y la rendición son la medicina.',espiritual:'El sacrificio consciente abre puertas que el esfuerzo cierra.'}},
+
+{id:'m13', cat:'major', num:'XIII', symbol:'♏',
+ es:'La Muerte', en:'Death', element:'Agua · Escorpio',
+ desc:'La transformación radical. El fin de un ciclo y el comienzo inevitable de algo completamente nuevo.',
+ up:['Transformación profunda e inevitable','Fin de un ciclo, cierre de etapas','Renovación y renacer tras la pérdida','Liberación de lo que no sirve','Cambio radical pero necesario'],
+ dn:['Resistencia tozuda al cambio inevitable','Incapacidad de dejar ir el pasado','Miedo a las transformaciones','Estancamiento en situaciones ya finalizadas','Transición retrasada que causa sufrimiento'],
+ how:{amor:'Una relación se termina o se transforma profundamente; acepta el cambio.',trabajo:'Una etapa profesional cierra; algo mejor viene después.',salud:'Transformación de hábitos: muere el viejo yo, nace el nuevo.',espiritual:'La muerte del ego es el nacimiento del ser espiritual auténtico.'}},
+
+{id:'m14', cat:'major', num:'XIV', symbol:'♐',
+ es:'La Templanza', en:'Temperance', element:'Fuego · Sagitario',
+ desc:'El arte del equilibrio, la moderación y la paciencia divina. La alquimia interior que funde opuestos.',
+ up:['Equilibrio, moderación y paciencia','Sanación y recuperación gradual','Armonía entre opuestos integrados','Alquimia personal','Fluir con la vida sin forzar'],
+ dn:['Excesos, desequilibrios e impulsividad','Impaciencia que sabotea procesos','Conflicto entre opuestos internos','Falta de moderación','Procesos de sanación interrumpidos'],
+ how:{amor:'Paciencia y equilibrio son la clave para que esta relación florezca.',trabajo:'La moderación y la constancia llevan al éxito sostenible.',salud:'La sanación requiere tiempo y un enfoque holístico y equilibrado.',espiritual:'La fusión de tus polaridades internas crea un ser más completo.'}},
+
+{id:'m15', cat:'major', num:'XV', symbol:'♑',
+ es:'El Diablo', en:'The Devil', element:'Tierra · Capricornio',
+ desc:'Las cadenas que nosotros mismos nos imponemos. Adicciones, apegos y las ilusiones materiales que limitan la libertad.',
+ up:['Apegos, adicciones y dependencias','Ataduras materiales o relacionales','Seducción de lo prohibido','Sombra personal no reconocida','Ciclos negativos difíciles de romper'],
+ dn:['Liberación de ataduras y adicciones','Toma de conciencia sobre propios límites','Inicio del proceso de desapego','Recuperación del poder personal','Romper con hábitos o relaciones tóxicas'],
+ how:{amor:'Examina si la atracción es amor genuino o dependencia malsana.',trabajo:'¿Estás atado a un trabajo por miedo o por vocación real?',salud:'Identifica las adicciones o hábitos que sabotean tu bienestar.',espiritual:'Mira de frente tu sombra; lo que niegas te controla.'}},
+
+{id:'m16', cat:'major', num:'XVI', symbol:'♂',
+ es:'La Torre', en:'The Tower', element:'Fuego · Marte',
+ desc:'La revelación súbita y la destrucción de lo construido sobre bases falsas. Dolorosa pero liberadora.',
+ up:['Cambio repentino e inesperado, crisis','Destrucción de estructuras falsas','Revelaciones que sacuden los cimientos','Caos necesario para la renovación','Liberación abrupta de situaciones opresivas'],
+ dn:['Evitar una crisis que llegará de todas formas','Resistencia a un colapso inevitable','Crisis interna silenciosa','Miedo al cambio que perpetúa el sufrimiento','Trauma no procesado'],
+ how:{amor:'Una verdad dolorosa sobre la relación sale a la luz ahora.',trabajo:'Un cambio brusco en tu entorno laboral que al final es liberador.',salud:'Una señal de alarma del cuerpo que no puedes ignorar más.',espiritual:'El ego debe ser sacudido para que la verdad pueda emerger.'}},
+
+{id:'m17', cat:'major', num:'XVII', symbol:'♒',
+ es:'La Estrella', en:'The Star', element:'Aire · Acuario',
+ desc:'El faro de esperanza tras la tormenta. Renovación espiritual, confianza en el universo y fe restaurada.',
+ up:['Esperanza, fe y optimismo renovado','Curación espiritual y emocional','Inspiración, creatividad y propósito','Confianza en el proceso universal','Calma y claridad después del caos'],
+ dn:['Desesperanza o pérdida de fe','Falta de inspiración','Desconexión espiritual','Pesimismo que nubla posibilidades','Dificultad para confiar en el futuro'],
+ how:{amor:'La esperanza y la fe en el amor se restauran después del dolor.',trabajo:'Un período de inspiración y visión creativa renovada.',salud:'La sanación viene; ten fe en el proceso de recuperación.',espiritual:'Eres guiado por fuerzas más grandes; confía y fluye.'}},
+
+{id:'m18', cat:'major', num:'XVIII', symbol:'♓',
+ es:'La Luna', en:'The Moon', element:'Agua · Piscis',
+ desc:'El reino de las ilusiones y el inconsciente profundo. No todo es lo que parece; navega con cautela.',
+ up:['Ilusiones, miedos e incertidumbre','Intuición poderosa pero confusa','Lo oculto que busca salir a la luz','Ciclos emocionales','Conexión con sueños y subconsciente'],
+ dn:['Confusión mental que se disipa','Miedos irracionales que se superan','Engaños que salen a la luz','Liberación de ilusiones','Claridad después de período oscuro'],
+ how:{amor:'No todo es como parece; usa la intuición para ver la verdad.',trabajo:'Hay información oculta en la situación; investiga antes de actuar.',salud:'Los síntomas pueden ser psicosomáticos; atiende tu mundo emocional.',espiritual:'El inconsciente te habla a través de sueños y sincronías.'}},
+
+{id:'m19', cat:'major', num:'XIX', symbol:'☉',
+ es:'El Sol', en:'The Sun', element:'Fuego · Sol',
+ desc:'La carta más luminosa del Tarot. Irradia vitalidad, alegría y éxito genuino. Su luz todo lo ilumina.',
+ up:['Éxito, felicidad y vitalidad plena','Claridad, verdad y transparencia','Energía positiva y optimismo','Logros reconocidos y celebrados','Inocencia recuperada, niño interior libre'],
+ dn:['Éxito temporal o reconocimiento tardío','Exceso de ego o vanidad','Felicidad superficial','Energía bloqueada o baja vitalidad','Optimismo mal enfocado'],
+ how:{amor:'Un amor radiante, alegre y pleno que da vida a ambas personas.',trabajo:'El éxito y el reconocimiento llegan de manera natural.',salud:'Vitalidad alta, energía renovada, bienestar físico y mental.',espiritual:'La luz de la consciencia ilumina todos los rincones del ser.'}},
+
+{id:'m20', cat:'major', num:'XX', symbol:'♇',
+ es:'El Juicio', en:'Judgement', element:'Fuego · Plutón',
+ desc:'El llamado al despertar. Evaluación de la propia vida, redención, perdón y resurrección hacia la autenticidad.',
+ up:['Despertar espiritual y llamado interior','Evaluación honesta del camino recorrido','Redención, perdón y segunda oportunidad','Transformación hacia la autenticidad','Decisiones que marcan un antes y después'],
+ dn:['Negarse a escuchar el llamado interior','Autojuicio severo o culpa no resuelta','Miedo al juicio ajeno','Negación a evaluar errores del pasado','Oportunidades de redención desaprovechadas'],
+ how:{amor:'Perdona y date una segunda oportunidad en el amor; renace.',trabajo:'Una evaluación honesta de tu carrera lleva a la decisión correcta.',salud:'Es hora de hacer las paces con tu cuerpo y comenzar de nuevo.',espiritual:'El llamado interior es urgente; es momento de despertar del todo.'}},
+
+{id:'m21', cat:'major', num:'XXI', symbol:'♄',
+ es:'El Mundo', en:'The World', element:'Tierra · Saturno',
+ desc:'La culminación y la totalidad. Realización completa, integración de todas las experiencias y triunfo merecido.',
+ up:['Realización, culminación y éxito total','Integración de todas las experiencias','Viajes, cambios de etapa','Totalidad, plenitud y satisfacción profunda','Inicio de nuevo ciclo desde la completitud'],
+ dn:['Ciclo incompleto, metas no alcanzadas','Resistencia a cerrar una etapa','Búsqueda de atajos','Sensación de vacío a pesar de los logros','Necesidad de completar asuntos pendientes'],
+ how:{amor:'Una relación que alcanza su plenitud; celebra lo que han construido.',trabajo:'Un proyecto se completa con éxito total y reconocimiento pleno.',salud:'Plenitud y bienestar en todos los niveles del ser.',espiritual:'La integración completa del ser; el viaje espiritual se completa.'}},
+
+// ── COPAS ──────────────────────────────────────────────────────
+{id:'c1', cat:'cups', num:'As', symbol:'♥',
+ es:'As de Copas', en:'Ace of Cups', element:'Agua',
+ desc:'El germen de toda experiencia emocional: el amor puro, la compasión desbordante y la apertura total del corazón.',
+ up:['Nuevo amor o inicio de relación significativa','Abundancia emocional y bienestar','Creatividad e inspiración espiritual','Apertura del corazón, empatía y compasión','Intuición poderosa y conexión espiritual'],
+ dn:['Bloqueo emocional o corazón cerrado','Amor reprimido que no se expresa','Vacío interior o insatisfacción','Exceso de sentimentalismo','Creatividad bloqueada por el miedo'],
+ how:{amor:'Un nuevo amor o el renacimiento de sentimientos profundos.',trabajo:'La creatividad y la inspiración están en su punto máximo.',salud:'Apertura emocional que trae bienestar al cuerpo físico.',espiritual:'El corazón se abre a la gracia divina y el amor universal.'}},
+
+{id:'c2', cat:'cups', num:'2', symbol:'♥',
+ es:'Dos de Copas', en:'Two of Cups', element:'Agua',
+ desc:'La unión armoniosa entre dos personas o aspectos del ser. El amor romántico y las alianzas del corazón.',
+ up:['Unión amorosa, atracción mutua intensa','Asociación equitativa y beneficiosa','Reconciliación y restablecimiento de lazos','Comprensión profunda y química emocional','Compromisos y acuerdos del corazón'],
+ dn:['Desequilibrio en la relación o codependencia','Ruptura, separación o malentendidos','Falta de reciprocidad','Tensiones ocultas','Promesas rotas o traición emocional'],
+ how:{amor:'Una conexión profunda y mutuamente satisfactoria está presente.',trabajo:'Una alianza o sociedad laboral muy prometedora y equilibrada.',salud:'La relación sana y el apoyo mutuo mejoran el bienestar.',espiritual:'La unión de dos almas como camino de crecimiento espiritual.'}},
+
+{id:'c3', cat:'cups', num:'3', symbol:'♥',
+ es:'Tres de Copas', en:'Three of Cups', element:'Agua',
+ desc:'La alegría compartida, la amistad, las fiestas y los momentos de pura dicha colectiva.',
+ up:['Celebración, festejo y alegría colectiva','Amistad profunda y círculo de apoyo','Éxitos compartidos y logros celebrados','Tiempo de ocio, placer y disfrute social','Sanación emocional a través del grupo'],
+ dn:['Excesos, frivolidad o superficialidad','Chismes o traición dentro del grupo','Aislamiento o exclusión social','Celebraciones prematuras','Dependencia del grupo, pérdida de identidad'],
+ how:{amor:'Celebra el amor con alegría, gratitud y apertura social.',trabajo:'El trabajo en equipo genera resultados que vale la pena festejar.',salud:'La alegría y la conexión social son medicina para el alma.',espiritual:'La comunidad espiritual y el ritual compartido nutren el alma.'}},
+
+{id:'c4', cat:'cups', num:'4', symbol:'♥',
+ es:'Cuatro de Copas', en:'Four of Cups', element:'Agua',
+ desc:'La contemplación introspectiva. El tedio o la apatía pueden impedirnos ver las oportunidades que el universo ofrece.',
+ up:['Introspección, meditación y retiro temporal','Insatisfacción con lo que se tiene','Oportunidad ignorada por apatía','Necesidad de tiempo para reflexionar','Hastío emocional que busca significado'],
+ dn:['Salir de la apatía y reencontrar el entusiasmo','Aceptar nuevas oportunidades','Dejar atrás el aburrimiento','Mayor participación en la vida social','Renovación de la motivación'],
+ how:{amor:'¿Estás tomando por sentada la relación? Valora lo que tienes.',trabajo:'Hay una oportunidad frente a ti que no estás viendo.',salud:'La introspección revela la raíz emocional de los malestares.',espiritual:'El silencio y la meditación profunda son necesarios ahora.'}},
+
+{id:'c5', cat:'cups', num:'5', symbol:'♥',
+ es:'Cinco de Copas', en:'Five of Cups', element:'Agua',
+ desc:'La pérdida y el duelo. Pero siempre hay copas en pie: no todo está perdido.',
+ up:['Pérdida, duelo y tristeza profunda','Decepción emocional o amor no correspondido','Arrepentimiento por errores del pasado','Foco excesivo en lo perdido','Necesidad de procesar el dolor'],
+ dn:['Inicio de la recuperación','Perdonar y soltar el resentimiento','Recuperar lo que se pensó perdido','Superar el duelo','Esperanza renovada tras el período difícil'],
+ how:{amor:'El duelo por una pérdida amorosa necesita ser honrado antes de seguir.',trabajo:'No te enfoques en lo que salió mal; hay recursos que aún tienes.',salud:'El llanto y el duelo son procesos de sanación necesarios.',espiritual:'Del dolor profundo emerge una sabiduría que no tiene precio.'}},
+
+{id:'c6', cat:'cups', num:'6', symbol:'♥',
+ es:'Seis de Copas', en:'Six of Cups', element:'Agua',
+ desc:'La nostalgia, la inocencia de la infancia y los recuerdos que moldean quiénes somos. Generosidad pura.',
+ up:['Nostalgia, recuerdos felices del pasado','Inocencia, pureza emocional y niño interior','Conexión con personas del pasado','Generosidad desinteresada','Herencia emocional y raíces familiares'],
+ dn:['Vivir atrapado en el pasado','Idealización romántica de tiempos idos','Inmadurez emocional','Necesidad de liberarse de patrones familiares','Resentimientos del pasado que afectan el presente'],
+ how:{amor:'Una conexión del pasado regresa o el amor infantil florece.',trabajo:'Experiencias y habilidades pasadas son relevantes ahora.',salud:'Sanar al niño interior para liberar el cuerpo adulto.',espiritual:'Las raíces espirituales y los ancestros tienen mensajes para ti.'}},
+
+{id:'c7', cat:'cups', num:'7', symbol:'♥',
+ es:'Siete de Copas', en:'Seven of Cups', element:'Agua',
+ desc:'Múltiples ilusiones, fantasías y opciones difusas. Sueños que pueden ser tanto inspiradores como engañosos.',
+ up:['Ilusiones, fantasías y ensoñaciones','Demasiadas opciones que generan confusión','Imaginación desbordante y creatividad caótica','Deseos dispersos sin plan concreto','Necesidad de discernir entre fantasía y realidad'],
+ dn:['Mayor claridad para elegir','Aterrizar los sueños con planes concretos','Superar la confusión e indecisión','Desilusión saludable que revela la verdad','Eliminar las ilusiones que no sirven'],
+ how:{amor:'¿Estás enamorado de la persona real o de quien imaginas que es?',trabajo:'Demasiadas ideas; elige una y comprométete del todo.',salud:'La mente agitada afecta el cuerpo; busca claridad y enfoque.',espiritual:'Discernir entre la ilusión espiritual y la experiencia genuina.'}},
+
+{id:'c8', cat:'cups', num:'8', symbol:'♥',
+ es:'Ocho de Copas', en:'Eight of Cups', element:'Agua',
+ desc:'Dejar atrás lo que se construyó para buscar algo más significativo. El abandono consciente.',
+ up:['Abandono voluntario de situación agotada','Búsqueda de mayor significado','Alejamiento de relaciones o situaciones vacías','Viaje espiritual o de autodescubrimiento','Valentía para dejar ir lo cómodo pero insatisfactorio'],
+ dn:['Permanecer por miedo al cambio','Dificultad para soltar lo conocido','Regreso a situaciones ya superadas','Huida de responsabilidades','Búsqueda superficial que evita la profundidad'],
+ how:{amor:'Dejar ir una relación que ya no nutre el alma, aunque duela.',trabajo:'Es hora de alejarse de lo que ya no tiene sentido.',salud:'Alejarse de situaciones de estrés crónico es necesario para sanar.',espiritual:'El retiro espiritual y la búsqueda de sentido son urgentes.'}},
+
+{id:'c9', cat:'cups', num:'9', symbol:'♥',
+ es:'Nueve de Copas', en:'Nine of Cups', element:'Agua',
+ desc:'La "carta del deseo". Anuncia satisfacción emocional, bienestar y el cumplimiento de los deseos más queridos.',
+ up:['Deseos cumplidos, satisfacción plena','Bienestar emocional y físico','Autocomplacencia y placer bien merecido','Éxito en asuntos del corazón','Gratitud y abundancia'],
+ dn:['Satisfacción superficial o materialista','Deseos mal encaminados','Exceso de autoindulgencia','Arrogancia emocional','Felicidad buscada en lugares equivocados'],
+ how:{amor:'Tus deseos amorosos se manifiestan; el corazón está satisfecho.',trabajo:'El trabajo trae satisfacción genuina y recompensas merecidas.',salud:'Bienestar pleno; el cuerpo refleja la satisfacción interior.',espiritual:'La gratitud profunda abre el canal de la abundancia universal.'}},
+
+{id:'c10', cat:'cups', num:'10', symbol:'♥',
+ es:'Diez de Copas', en:'Ten of Cups', element:'Agua',
+ desc:'La plenitud emocional y la felicidad familiar duradera. El hogar armonioso y el amor en su expresión más completa.',
+ up:['Felicidad familiar y armonía del hogar','Relaciones amorosas duraderas','Realización emocional completa','Paz interior y bienestar profundo','Comunidad, pertenencia y apoyo mutuo'],
+ dn:['Conflictos familiares o disfunción','Distancia emocional en relaciones cercanas','Felicidad exterior que oculta problemas','Expectativas irreales sobre la familia','Ruptura de la armonía doméstica'],
+ how:{amor:'La plenitud del amor familiar y romántico en su máxima expresión.',trabajo:'El equilibrio entre trabajo y hogar crea bienestar sostenible.',salud:'La armonía familiar es el mejor remedio para el bienestar.',espiritual:'El amor incondicional como camino y destino espiritual.'}},
+
+{id:'cP', cat:'cups', num:'Paje', symbol:'♥',
+ es:'Paje de Copas', en:'Page of Cups', element:'Agua',
+ desc:'El mensajero de las emociones: curioso, soñador y abierto a lo nuevo. Trae noticias de amor.',
+ up:['Mensajes amorosos o noticias emocionales','Curiosidad emocional e intuición que despierta','Creatividad espontánea y artística','Apertura a nuevas experiencias sentimentales','Sensibilidad, ternura y espíritu romántico'],
+ dn:['Inmadurez emocional o caprichos','Noticias emocionales retrasadas o confusas','Fantasías poco realistas sobre el amor','Sensibilidad excesiva','Bloqueo de la expresión creativa'],
+ how:{amor:'Una declaración de amor o noticias emocionales inesperadas llegan.',trabajo:'Un mensaje o propuesta creativa trae nuevas posibilidades.',salud:'Escucha los mensajes emocionales sutiles de tu cuerpo.',espiritual:'Un sueño o sincronía trae un mensaje espiritual importante.'}},
+
+{id:'cK', cat:'cups', num:'Caballero', symbol:'♥',
+ es:'Caballero de Copas', en:'Knight of Cups', element:'Agua',
+ desc:'El romántico del Tarot: el amante cortés que persigue sus sueños con el corazón abierto.',
+ up:['Propuesta romántica o declaración de amor','Seguir los sueños con pasión','Mensajero de buenas noticias emocionales','Creatividad en acción, proyectos artísticos','Encanto, carisma y sensibilidad refinada'],
+ dn:['Romanticismo poco práctico','Manipulación emocional o seducción deshonesta','Decepciones amorosas','Moodiness y cambios emocionales bruscos','Huida de compromisos serios'],
+ how:{amor:'Una propuesta romántica o una relación apasionante se aproxima.',trabajo:'Proyectos creativos y artísticos avanzan con inspiración.',salud:'El arte y la creatividad como terapia para el alma.',espiritual:'Seguir el llamado del corazón es la práctica espiritual ahora.'}},
+
+{id:'cQ', cat:'cups', num:'Reina', symbol:'♥',
+ es:'Reina de Copas', en:'Queen of Cups', element:'Agua',
+ desc:'La inteligencia emocional en su máxima expresión: compasiva, intuitiva y profundamente conectada.',
+ up:['Inteligencia emocional y empatía profunda','Intuición muy desarrollada','Cuidado amoroso y compasión','Sanadora, consejera o figura de apoyo','Profundidad psíquica y conexión espiritual'],
+ dn:['Manipulación emocional o chantaje afectivo','Inestabilidad emocional o drama','Intuición distorsionada por el miedo','Dependencia emocional','Ahogarse en las propias emociones'],
+ how:{amor:'Cuida y nutre la relación con profunda empatía y comprensión.',trabajo:'Tu intuición y empatía son tus mayores activos profesionales.',salud:'La sanación emocional profunda es el camino hacia la salud.',espiritual:'El amor incondicional como práctica espiritual diaria.'}},
+
+{id:'cR', cat:'cups', num:'Rey', symbol:'♥',
+ es:'Rey de Copas', en:'King of Cups', element:'Agua',
+ desc:'Gobierna sus emociones con sabiduría y equilibrio. Siente profundamente sin ser arrastrado por la corriente.',
+ up:['Sabiduría emocional y madurez sentimental','Equilibrio entre razón y corazón','Consejero compasivo, justo y diplomático','Liderazgo empático','Estabilidad en medio de tormentas emocionales'],
+ dn:['Represión emocional o frialdad','Manipulación disfrazada de sabiduría','Adicciones o comportamientos escapistas','Inestabilidad emocional oculta','Usar las emociones ajenas en beneficio propio'],
+ how:{amor:'Un amor maduro, estable y emocionalmente seguro.',trabajo:'Lidera con empatía y la sabiduría de quien ha vivido mucho.',salud:'El dominio emocional protege la salud física.',espiritual:'La compasión activa como la práctica espiritual más elevada.'}},
+
+// ── OROS ───────────────────────────────────────────────────────
+{id:'p1', cat:'pents', num:'As', symbol:'♦',
+ es:'As de Oros', en:'Ace of Pentacles', element:'Tierra',
+ desc:'La semilla de la abundancia material. Nuevas oportunidades financieras y el potencial de construir algo sólido.',
+ up:['Nueva oportunidad financiera o de negocios','Inicio de proyecto material próspero','Abundancia, prosperidad y estabilidad','Entrada inesperada de dinero','Bases sólidas para construir riqueza'],
+ dn:['Oportunidad financiera perdida','Codicia o avaricia que bloquea el flujo','Proyectos materiales inestables','Dificultades económicas o pérdidas','Materialismo excesivo sin satisfacción'],
+ how:{amor:'Una relación que ofrece seguridad material y emocional sólida.',trabajo:'Una nueva oportunidad laboral o de negocios muy prometedora.',salud:'Invierte en tu salud ahora; los fundamentos son clave.',espiritual:'La abundancia material como reflejo de la abundancia interior.'}},
+
+{id:'p2', cat:'pents', num:'2', symbol:'♦',
+ es:'Dos de Oros', en:'Two of Pentacles', element:'Tierra',
+ desc:'El malabarista financiero: equilibrar múltiples responsabilidades económicas con adaptabilidad.',
+ up:['Equilibrio financiero y manejo de recursos','Adaptabilidad ante cambios económicos','Múltiples proyectos en simultáneo','Flexibilidad y capacidad de improvisación','Gestión eficiente del tiempo y el dinero'],
+ dn:['Desequilibrio financiero o deudas','Falta de organización en asuntos económicos','Demasiadas responsabilidades','Gastos descontrolados','Estrés por insostenibilidad financiera'],
+ how:{amor:'Equilibra el tiempo y la energía que dedicas a la relación.',trabajo:'Prioriza; no puedes dar el 100% a todo al mismo tiempo.',salud:'El estrés de malabarear todo afecta el cuerpo; delega.',espiritual:'El equilibrio dinámico es más valioso que la perfección estática.'}},
+
+{id:'p3', cat:'pents', num:'3', symbol:'♦',
+ es:'Tres de Oros', en:'Three of Pentacles', element:'Tierra',
+ desc:'El trabajo bien hecho y la maestría artesanal. Aprendizaje práctico y colaboración productiva.',
+ up:['Reconocimiento del trabajo y el talento','Colaboración efectiva y trabajo en equipo','Aprendizaje práctico y desarrollo de habilidades','Proyectos creativos con resultados tangibles','Maestría artesanal y excelencia profesional'],
+ dn:['Falta de reconocimiento o valoración','Problemas de comunicación en equipo','Trabajo de baja calidad','Dificultad para colaborar','Talentos no desarrollados'],
+ how:{amor:'El trabajo en equipo y el apoyo mutuo fortalecen la relación.',trabajo:'La colaboración y la maestría artesanal son claves ahora.',salud:'El trabajo con un profesional de la salud da resultados reales.',espiritual:'El trabajo espiritual dedicado y constante trae frutos.'}},
+
+{id:'p4', cat:'pents', num:'4', symbol:'♦',
+ es:'Cuatro de Oros', en:'Four of Pentacles', element:'Tierra',
+ desc:'Alguien que se aferra a sus posesiones. La seguridad puede convertirse en bloqueo si el miedo impide el flujo.',
+ up:['Seguridad financiera y estabilidad','Ahorro responsable y gestión cautelosa','Control sobre los recursos materiales','Conservadurismo ante riesgos','Protección del patrimonio'],
+ dn:['Tacañería, avaricia o control excesivo','Miedo a la pobreza que genera parálisis','Pérdida de control sobre las finanzas','Rigidez que impide el crecimiento','Materialismo que aísla emocionalmente'],
+ how:{amor:'¿El control o el miedo impide que te abras emocionalmente?',trabajo:'Protege lo que has construido sin caer en la rigidez.',salud:'El miedo y el control excesivo crean tensión en el cuerpo.',espiritual:'Suelta el apego; la verdadera seguridad es interior.'}},
+
+{id:'p5', cat:'pents', num:'5', symbol:'♦',
+ es:'Cinco de Oros', en:'Five of Pentacles', element:'Tierra',
+ desc:'La escasez material y el sentimiento de exclusión. La ayuda está disponible; hay que alzar la vista para verla.',
+ up:['Dificultades económicas o pérdida de empleo','Pobreza material o carencias temporales','Sentimiento de exclusión o marginación','Salud deteriorada por estrés económico','Necesidad de buscar y aceptar ayuda'],
+ dn:['Inicio de recuperación financiera','Superar la mentalidad de escasez','Aceptar la ayuda disponible','Salir de una racha económica difícil','Encontrar recursos donde no se esperaba'],
+ how:{amor:'¿La inseguridad económica está afectando la relación?',trabajo:'La crisis es temporal; busca apoyo y recursos disponibles.',salud:'La precariedad económica afecta la salud; busca apoyo.',espiritual:'En la pobreza también hay lecciones espirituales profundas.'}},
+
+{id:'p6', cat:'pents', num:'6', symbol:'♦',
+ es:'Seis de Oros', en:'Six of Pentacles', element:'Tierra',
+ desc:'La generosidad equilibrada y el flujo natural del dinero. También habla de préstamos y apoyos.',
+ up:['Generosidad, donaciones y actos caritativos','Recibir apoyo financiero o un préstamo','Equilibrio entre dar y recibir','Reconocimiento y recompensa merecida','Filantropía y uso responsable de los recursos'],
+ dn:['Generosidad condicionada o control a través del dinero','Deudas no saldadas','Desequilibrio en el intercambio','Mezquindad disfrazada de ayuda','Dependencia financiera'],
+ how:{amor:'¿El dar y el recibir está equilibrado en tu relación?',trabajo:'Apoya a otros y el apoyo regresará multiplicado.',salud:'Recibir ayuda y cuidado no es debilidad; es sabiduría.',espiritual:'La generosidad sin condiciones es la práctica espiritual más pura.'}},
+
+{id:'p7', cat:'pents', num:'7', symbol:'♦',
+ es:'Siete de Oros', en:'Seven of Pentacles', element:'Tierra',
+ desc:'Pausa para evaluar el progreso de los esfuerzos. Paciencia ante la cosecha y evaluación estratégica.',
+ up:['Paciencia ante los frutos del trabajo largo','Evaluación del progreso y resultados','Inversión de tiempo y esfuerzo que rinde','Contemplación del camino recorrido','Perseverancia en proyectos de largo plazo'],
+ dn:['Impaciencia o frustración por los resultados','Trabajo que no rinde los frutos esperados','Necesidad de cambiar la estrategia','Esfuerzos desperdiciados o mal dirigidos','Abandono prematuro de proyectos prometedores'],
+ how:{amor:'Evalúa honestamente si la inversión emocional está siendo recíproca.',trabajo:'Haz una pausa y evalúa si la estrategia está funcionando.',salud:'La recuperación toma tiempo; sé paciente con el proceso.',espiritual:'El crecimiento espiritual es gradual; confía en el proceso.'}},
+
+{id:'p8', cat:'pents', num:'8', symbol:'♦',
+ es:'Ocho de Oros', en:'Eight of Pentacles', element:'Tierra',
+ desc:'El artesano dedicado: el aprendizaje constante, la práctica meticulosa y la maestría que se construye paso a paso.',
+ up:['Dedicación total al aprendizaje y la maestría','Trabajo meticuloso y atención al detalle','Formación profesional o nuevo oficio','Disciplina y constancia en el desarrollo','Habilidades que se perfeccionan con la práctica'],
+ dn:['Perfeccionismo paralizante','Trabajo rutinario sin crecimiento','Pérdida de motivación','Trabajo mal remunerado o sin reconocimiento','Habilidades mediocres por falta de dedicación'],
+ how:{amor:'Trabaja en la relación con la misma dedicación que en un oficio.',trabajo:'La práctica constante y la formación te llevan a la maestría.',salud:'La disciplina en los hábitos de salud produce transformación real.',espiritual:'La práctica espiritual diaria es la clave, no la inspiración ocasional.'}},
+
+{id:'p9', cat:'pents', num:'9', symbol:'♦',
+ es:'Nueve de Oros', en:'Nine of Pentacles', element:'Tierra',
+ desc:'La autosuficiencia lograda con esfuerzo propio. La abundancia ganada, el refinamiento y el disfrute del éxito.',
+ up:['Independencia financiera bien ganada','Lujo, refinamiento y vida cómoda','Autosuficiencia y confianza en uno mismo','Disfrutar los logros con elegancia','Éxito logrado por mérito propio'],
+ dn:['Dependencia económica o falta de autonomía','Riqueza mal habida','Exceso de trabajo que arruina la vida personal','Soledad en medio de la abundancia','Pérdida de los frutos del esfuerzo propio'],
+ how:{amor:'Ama desde la autosuficiencia, no desde la necesidad.',trabajo:'Disfruta los frutos de tu esfuerzo y éxito con elegancia.',salud:'Date el lujo del autocuidado; te lo mereces.',espiritual:'La gratitud por la abundancia recibida multiplica los dones.'}},
+
+{id:'p10', cat:'pents', num:'10', symbol:'♦',
+ es:'Diez de Oros', en:'Ten of Pentacles', element:'Tierra',
+ desc:'El legado familiar, la riqueza transgeneracional y la plenitud material que se comparte y transmite.',
+ up:['Riqueza familiar y legado transgeneracional','Herencia, bienes raíces y patrimonio familiar','Estabilidad financiera a largo plazo','Tradiciones familiares y arraigo al hogar','Éxito material que beneficia a toda la familia'],
+ dn:['Conflictos por herencias o bienes familiares','Inestabilidad financiera familiar','Ruptura con tradiciones o raíces','Riqueza que genera conflictos o envidias','Falta de legado o visión a largo plazo'],
+ how:{amor:'Una relación que construye legado y familia con visión de futuro.',trabajo:'Construye algo que trascienda, que sea tu legado profesional.',salud:'Los patrones de salud familiares merecen atención y sanación.',espiritual:'Honrar a los ancestros y construir un legado espiritual duradero.'}},
+
+{id:'pP', cat:'pents', num:'Paje', symbol:'♦',
+ es:'Paje de Oros', en:'Page of Pentacles', element:'Tierra',
+ desc:'El estudiante dedicado y el aprendiz concienzudo. Trae noticias de oportunidades materiales.',
+ up:['Noticias de oportunidades laborales o financieras','Inicio de estudios o aprendizaje práctico','Diligencia, curiosidad y aplicación constante','Enfoque en objetivos materiales concretos','Planificación cuidadosa del futuro'],
+ dn:['Falta de dirección o enfoque en los estudios','Oportunidades materiales desaprovechadas','Irresponsabilidad financiera','Planes poco realistas o sin fundamento','Procrastinación en asuntos materiales'],
+ how:{amor:'Tómate el tiempo para aprender sobre el amor con paciencia.',trabajo:'Una oportunidad de aprendizaje o formación se presenta.',salud:'Estudia y aprende sobre tu salud; el conocimiento es poder.',espiritual:'El estudio serio de las tradiciones espirituales trae frutos.'}},
+
+{id:'pK', cat:'pents', num:'Caballero', symbol:'♦',
+ es:'Caballero de Oros', en:'Knight of Pentacles', element:'Tierra',
+ desc:'Avanza con paso lento pero seguro. La perseverancia metódica, la responsabilidad y el trabajo constante.',
+ up:['Trabajo constante, metodológico y responsable','Avance lento pero seguro','Fiabilidad, lealtad y cumplimiento','Atención al detalle en proyectos materiales','Resistencia y tenacidad ante obstáculos'],
+ dn:['Pereza, inercia o resistencia al esfuerzo','Rutina asfixiante sin visión de futuro','Obstinación que impide la adaptación','Trabajo sin progreso visible','Falta de ambición o conformismo'],
+ how:{amor:'Un amor lento que se construye con paciencia y dedicación.',trabajo:'La constancia y la responsabilidad son tus mayores virtudes ahora.',salud:'Rutinas saludables sostenidas en el tiempo traen transformación real.',espiritual:'La práctica espiritual constante supera al talento ocasional.'}},
+
+{id:'pQ', cat:'pents', num:'Reina', symbol:'♦',
+ es:'Reina de Oros', en:'Queen of Pentacles', element:'Tierra',
+ desc:'Combina el éxito material con el calor del hogar. Crea abundancia con sus manos y gestiona los recursos con elegancia.',
+ up:['Abundancia creada con habilidad y cuidado','Naturaleza práctica combinada con generosidad','Habilidades domésticas y empresariales unidas','Seguridad material que nutre a los demás','Conexión con la naturaleza y el cuerpo'],
+ dn:['Desequilibrio entre hogar y trabajo','Desconfianza en asuntos financieros','Envidia por las posesiones ajenas','Descuido del hogar o la salud','Materialismo que ahoga las emociones'],
+ how:{amor:'Un amor que nutre, protege y crea un hogar cálido y abundante.',trabajo:'Tu habilidad para generar abundancia es extraordinaria ahora.',salud:'Nutre tu cuerpo con los mismos cuidados que das a los demás.',espiritual:'La tierra, el cuerpo y la naturaleza son tu templo espiritual.'}},
+
+{id:'pR', cat:'pents', num:'Rey', symbol:'♦',
+ es:'Rey de Oros', en:'King of Pentacles', element:'Tierra',
+ desc:'El empresario exitoso y el proveedor generoso. Estabilidad financiera, liderazgo pragmático y riqueza real.',
+ up:['Éxito empresarial y liderazgo financiero','Estabilidad económica sólida','Generosidad con quienes dependen de él','Pragmatismo y buen juicio económico','Confiabilidad, madurez y autoridad merecida'],
+ dn:['Codicia, corrupción o abuso de poder económico','Obsesión materialista que destruye relaciones','Mal manejo financiero disfrazado de éxito','Inflexibilidad','Pérdidas financieras por exceso de confianza'],
+ how:{amor:'Un amor que ofrece seguridad, confiabilidad y abundancia genuina.',trabajo:'El liderazgo pragmático y la visión financiera son tus fortalezas.',salud:'Invierte en tu salud como en tus mejores negocios.',espiritual:'La sabiduría de quien ha construido algo real con sus propias manos.'}},
+
+// ── ESPADAS ──────────────────────────────────────────────────
+{id:'s1', cat:'swords', num:'As', symbol:'♠',
+ es:'As de Espadas', en:'Ace of Swords', element:'Aire',
+ desc:'La espada de la verdad absoluta: la claridad mental que corta el engaño y el poder de la mente en estado puro.',
+ up:['Claridad mental y pensamiento afilado','Verdad revelada, victoria intelectual','Nuevo comienzo marcado por la razón','Decisión firme y comunicación directa','Poder de la mente para superar obstáculos'],
+ dn:['Confusión mental o pensamiento caótico','Verdad dolorosa que se evita enfrentar','Decisiones apresuradas y mal pensadas','Comunicación agresiva o hiriente','Abuso del poder intelectual'],
+ how:{amor:'La honestidad radical abre el camino hacia un amor más auténtico.',trabajo:'La claridad mental y la decisión directa son necesarias ahora.',salud:'Un diagnóstico claro o un pensamiento afilado resuelve el problema.',espiritual:'La verdad sin adornos es el camino espiritual más elevado.'}},
+
+{id:'s2', cat:'swords', num:'2', symbol:'♠',
+ es:'Dos de Espadas', en:'Two of Swords', element:'Aire',
+ desc:'El punto muerto: la mente bloqueada entre dos opciones igualmente válidas, los ojos vendados ante la realidad.',
+ up:['Indecisión o punto muerto','Negación consciente de una verdad incómoda','Tregua temporal en un conflicto','Necesidad de equilibrar lógica e intuición','Bloqueo de información que dificulta la decisión'],
+ dn:['Tomar finalmente la decisión postergada','Enfrentar la verdad que se había evitado','Reanudación del conflicto','Confusión que se intensifica sin acción','Superar el punto muerto'],
+ how:{amor:'La indecisión está bloqueando la relación; es hora de elegir.',trabajo:'Necesitas más información antes de poder tomar esta decisión.',salud:'Ignorar el problema no lo hará desaparecer; actúa.',espiritual:'El silencio interior puede revelar la respuesta que la mente no ve.'}},
+
+{id:'s3', cat:'swords', num:'3', symbol:'♠',
+ es:'Tres de Espadas', en:'Three of Swords', element:'Aire',
+ desc:'El dolor emocional, la traición y el corazón roto. Las lágrimas necesarias para sanar.',
+ up:['Dolor emocional intenso, corazón roto','Traición, engaño o infidelidad revelada','Pérdida dolorosa, separación o duelo','Comunicación hiriente que deja cicatrices','Llanto necesario como inicio de la sanación'],
+ dn:['Inicio de la recuperación del dolor','Perdonar aunque sin olvidar la lección','Dolores viejos que resurgen para sanar','Dramatismo excesivo','Negación del dolor que retrasa la sanación'],
+ how:{amor:'El dolor de corazón es real; permítete llorarlo para sanar.',trabajo:'Una ruptura laboral o traición de un colega duele profundamente.',salud:'El dolor emocional se manifiesta físicamente; atiéndelo.',espiritual:'Incluso el dolor más profundo puede ser un maestro espiritual.'}},
+
+{id:'s4', cat:'swords', num:'4', symbol:'♠',
+ es:'Cuatro de Espadas', en:'Four of Swords', element:'Aire',
+ desc:'El descanso obligatorio. La mente necesita silencio para recuperarse e integrar las experiencias.',
+ up:['Descanso reparador y recuperación mental','Meditación, retiro o convalecencia','Pausa necesaria antes de actuar','Tiempo para integrar y procesar','Sanación del estrés mental'],
+ dn:['Imposibilidad de descansar o inquietud mental','Regreso prematuro a la actividad','Agotamiento mental ignorado','Stagnación por exceso de descanso','Ansiedad o insomnio que impide la recuperación'],
+ how:{amor:'Tómate un descanso de la intensidad emocional de la relación.',trabajo:'El cerebro cansado toma malas decisiones; descansa primero.',salud:'El reposo es parte esencial del proceso de sanación.',espiritual:'En el silencio y la quietud, la sabiduría se manifiesta.'}},
+
+{id:'s5', cat:'swords', num:'5', symbol:'♠',
+ es:'Cinco de Espadas', en:'Five of Swords', element:'Aire',
+ desc:'Ganar a cualquier precio tiene un costo oculto. La victoria obtenida deshonestamente deja heridas profundas.',
+ up:['Conflicto o disputa con ganadores y perdedores','Victoria pírrica obtenida con deshonor','Comportamiento deshonesto o manipulador','Humillación o derrota que deja secuelas','Necesidad de elegir las batallas'],
+ dn:['Reconciliación tras un conflicto','Admitir la derrota con dignidad','Liberarse de una situación conflictiva','Superar el resentimiento','Aprender la lección de los conflictos pasados'],
+ how:{amor:'¿Estás ganando peleas pero perdiendo la relación?',trabajo:'La competencia desleal tiene consecuencias; actúa con integridad.',salud:'El estrés de los conflictos constantes deteriora la salud.',espiritual:'La verdadera victoria es la que no deja heridas en nadie.'}},
+
+{id:'s6', cat:'swords', num:'6', symbol:'♠',
+ es:'Seis de Espadas', en:'Six of Swords', element:'Aire',
+ desc:'El viaje hacia aguas más tranquilas. Se avanza con calma hacia un lugar de mayor paz y claridad.',
+ up:['Transición hacia una situación más tranquila','Viaje físico o mental de recuperación','Alejamiento de situaciones conflictivas','Progreso gradual hacia la paz mental','Aceptación del cambio con serenidad'],
+ dn:['Resistencia a alejarse de una situación dañina','Regreso a problemas ya superados','Dificultades en la transición','Incapacidad de dejar atrás el pasado doloroso','Retroceso en la recuperación'],
+ how:{amor:'Alejarse del conflicto hacia aguas más tranquilas en la relación.',trabajo:'Un cambio de entorno laboral trae la paz que necesitas.',salud:'El viaje hacia la salud requiere alejarse de lo que enferma.',espiritual:'La mente en calma es el barco que navega hacia la sabiduría.'}},
+
+{id:'s7', cat:'swords', num:'7', symbol:'♠',
+ es:'Siete de Espadas', en:'Seven of Swords', element:'Aire',
+ desc:'Estrategia, astucia y a veces deshonestidad. Actuar solo, evitar la confrontación directa o usar tácticas poco claras.',
+ up:['Estrategia astuta pero éticamente cuestionable','Actuar con sigilo o de manera no convencional','Evitar el conflicto directo con diplomacia','Engaño, robo o comportamiento furtivo','Tomar solo el camino que crees más inteligente'],
+ dn:['Ser descubierto en un engaño o mentira','Conciencia de táctica deshonesta','Abandonar estrategias que van contra los valores','Mayor honestidad y apertura','Confesión o revelación que trae alivio'],
+ how:{amor:'¿Hay secretos o falta de honestidad en la relación?',trabajo:'Cuidado con las tácticas cuestionables; pueden volver como bumerán.',salud:'La honestidad con el médico y contigo mismo es fundamental.',espiritual:'La integridad es la base de cualquier camino espiritual auténtico.'}},
+
+{id:'s8', cat:'swords', num:'8', symbol:'♠',
+ es:'Ocho de Espadas', en:'Eight of Swords', element:'Aire',
+ desc:'Atrapado por las propias creencias limitantes. Las espadas están allí, pero la verdadera prisión está en la mente.',
+ up:['Sensación de estar atrapado o sin salida','Limitaciones mentales autoimpuestas','Victimismo o pensamiento negativo','Sensación de no tener poder ni opciones','Miedo que impide ver soluciones'],
+ dn:['Liberación de creencias limitantes','Reconocer que la jaula era mental','Recuperar el poder personal','Salir de situación sin salida aparente','Mayor claridad mental'],
+ how:{amor:'Las creencias sobre el amor que tienes te están aprisionando.',trabajo:'La solución está ahí; la mente bloqueada no la puede ver.',salud:'El pensamiento negativo impacta directamente en la salud física.',espiritual:'La libertad espiritual comienza por liberar la mente del miedo.'}},
+
+{id:'s9', cat:'swords', num:'9', symbol:'♠',
+ es:'Nueve de Espadas', en:'Nine of Swords', element:'Aire',
+ desc:'La ansiedad nocturna: los pensamientos que se amplifican en la oscuridad y el sufrimiento mental intenso.',
+ up:['Ansiedad intensa, insomnio y pensamientos oscuros','Miedo, culpa o remordimiento agobiante','Sufrimiento mental que parece insuperable','Pesadillas o temores nocturnos recurrentes','Necesidad urgente de apoyo emocional'],
+ dn:['Inicio de la salida de la ansiedad','Poner los miedos en perspectiva real','Buscar y encontrar ayuda','Sanar heridas mentales con trabajo interior','Reconocer que los miedos eran más grandes que la realidad'],
+ how:{amor:'La ansiedad sobre la relación es mayor que el problema real.',trabajo:'El miedo al fracaso laboral amplificado en la oscuridad no es real.',salud:'La ansiedad crónica requiere atención profesional urgente.',espiritual:'La oscuridad de la noche del alma precede al amanecer espiritual.'}},
+
+{id:'s10', cat:'swords', num:'10', symbol:'♠',
+ es:'Diez de Espadas', en:'Ten of Swords', element:'Aire',
+ desc:'El punto más bajo de una experiencia dolorosa. Siempre que se toca fondo, el único movimiento posible es hacia arriba.',
+ up:['Derrota total, final doloroso e inevitable','Traición profunda o golpe inesperado','Momento más oscuro antes del amanecer','Fin definitivo de una situación o relación','Aceptar la derrota como inicio del renacimiento'],
+ dn:['Recuperación lenta pero real después del fondo','Resistencia a aceptar el final definitivo','Temer una catástrofe que no ha llegado','Dramatismo excesivo','Superación de la mentalidad de víctima'],
+ how:{amor:'El final doloroso de una relación abre espacio para algo nuevo.',trabajo:'Una derrota profesional que, a la distancia, fue el comienzo.',salud:'El punto más bajo de la enfermedad precede a la recuperación.',espiritual:'La rendición total ante lo que no puedes cambiar es liberación.'}},
+
+{id:'sP', cat:'swords', num:'Paje', symbol:'♠',
+ es:'Paje de Espadas', en:'Page of Swords', element:'Aire',
+ desc:'El mensajero de la mente ágil: curioso, vigilante y lleno de ideas. Su entusiasmo mental puede superar su madurez.',
+ up:['Mente ágil, curiosidad intelectual intensa','Noticias inesperadas o información nueva','Vigilancia, observación y pensamiento crítico','Energía mental fresca y nuevas ideas','Comunicación directa, a veces impulsiva'],
+ dn:['Chismes, habladurías o información falsa','Pensamiento superficial','Comunicación agresiva o hiriente','Impulsividad intelectual','Espionaje, desconfianza o paranoia'],
+ how:{amor:'Noticias o información nueva cambia la perspectiva de la relación.',trabajo:'Una idea brillante aparece; desarrolla bien el plan antes de actuar.',salud:'Investiga y aprende sobre tu salud con mente crítica y abierta.',espiritual:'La vigilancia y la atención en el presente son prácticas espirituales.'}},
+
+{id:'sK', cat:'swords', num:'Caballero', symbol:'♠',
+ es:'Caballero de Espadas', en:'Knight of Swords', element:'Aire',
+ desc:'Carga a toda velocidad hacia su objetivo: brillante, directo y a veces imprudente. Su energía es cortante.',
+ up:['Acción rápida y directa sin titubeos','Mente brillante y gran capacidad analítica','Comunicación franca aunque sin tacto','Ambición que avanza sin mirar atrás','Cambios rápidos y situaciones que se aceleran'],
+ dn:['Impulsividad destructiva o comportamiento errático','Agresividad verbal o conflictos innecesarios','Pensar antes de hablar o actuar','Velocidad que lleva a errores costosos','Arrogancia intelectual'],
+ how:{amor:'La honestidad directa puede ser brutal; encuentra el equilibrio.',trabajo:'La velocidad y la brillantez son tus armas; úsalas con precisión.',salud:'La mente hiperactiva puede agotarte; frena antes del colapso.',espiritual:'La espada de la verdad corta ilusiones; úsala con compasión.'}},
+
+{id:'sQ', cat:'swords', num:'Reina', symbol:'♠',
+ es:'Reina de Espadas', en:'Queen of Swords', element:'Aire',
+ desc:'La agudeza mental combinada con sabiduría profunda ganada a través del sufrimiento. Mente clara y juicio imparcial.',
+ up:['Inteligencia aguda e independencia mental','Pensamiento claro libre de ilusiones','Comunicación directa y honesta','Sabiduría nacida de la experiencia dura','Imparcialidad, justicia y perspicacia'],
+ dn:['Frialdad emocional que raya en la crueldad','Cinismo, amargura o resentimientos','Juicio severo hacia sí misma y los demás','Manipulación intelectual','Aislamiento por desconfianza'],
+ how:{amor:'La independencia mental y la honestidad son tus mejores atributos.',trabajo:'Tu claridad de pensamiento y precisión son invaluables ahora.',salud:'El intelecto sin emoción puede ignorar señales del cuerpo.',espiritual:'La sabiduría nacida del sufrimiento es de las más profundas.'}},
+
+{id:'sR', cat:'swords', num:'Rey', symbol:'♠',
+ es:'Rey de Espadas', en:'King of Swords', element:'Aire',
+ desc:'El líder intelectual por excelencia: justo, lógico y capaz de tomar decisiones difíciles con la mente fría.',
+ up:['Liderazgo intelectual y autoridad bien fundada','Pensamiento lógico y decisiones justas','Dominio del lenguaje y la comunicación','Ética, principios y coherencia','Experto, abogado o mentor de gran capacidad'],
+ dn:['Tiranía intelectual o abuso de autoridad','Manipulación a través del conocimiento','Frialdad que convierte la lógica en arma','Juicio injusto','Desconexión total de la dimensión emocional'],
+ how:{amor:'La lógica y la justicia deben coexistir con la ternura.',trabajo:'Tu autoridad intelectual y tu ética son tu mayor capital.',salud:'El diagnóstico preciso requiere tanto razón como intuición.',espiritual:'La disciplina mental es el fundamento de la práctica espiritual.'}},
+
+// ── BASTOS ───────────────────────────────────────────────────
+{id:'w1', cat:'wands', num:'As', symbol:'♣',
+ es:'As de Bastos', en:'Ace of Wands', element:'Fuego',
+ desc:'La chispa primordial de la energía creativa. Anuncia el inicio de una nueva aventura con entusiasmo y pasión sin límites.',
+ up:['Nueva empresa, proyecto o aventura apasionante','Chispa de inspiración y energía creativa','Potencial ilimitado listo para manifestarse','Entusiasmo, motivación y fuego interior','Inicio poderoso que marca un nuevo camino'],
+ dn:['Bloqueo creativo o falta de inspiración','Proyectos que no arrancan o se atascan','Energía dispersa sin dirección','Entusiasmo que se apaga antes de comenzar','Retrasos frustrantes en nuevos comienzos'],
+ how:{amor:'Una nueva relación apasionante o la renovación del fuego en la actual.',trabajo:'Una idea brillante y apasionante que merece ser desarrollada.',salud:'La energía vital renace; aprovecha este impulso para cambiar hábitos.',espiritual:'El fuego del espíritu se enciende; sigue su llamado sin dudar.'}},
+
+{id:'w2', cat:'wands', num:'2', symbol:'♣',
+ es:'Dos de Bastos', en:'Two of Wands', element:'Fuego',
+ desc:'El visionario en la cima: contempla el horizonte con el mundo en sus manos, listo para expandirse.',
+ up:['Planificación de expansión y nuevos horizontes','Visión de futuro, ambición y potencial','Primeros pasos de un plan ambicioso','Espíritu aventurero y exploración activa','Asociaciones o colaboraciones para crecer'],
+ dn:['Falta de visión o miedo al futuro','Planes que no salen del papel','Indecisión sobre el camino a seguir','Oportunidades de expansión desaprovechadas','Estancamiento por comodidad'],
+ how:{amor:'¿Tienen visión de futuro compartida en la relación?',trabajo:'La expansión internacional o hacia nuevos mercados está en juego.',salud:'Una visión de salud a largo plazo requiere planificación y valentía.',espiritual:'La visión espiritual más allá del horizonte visible te guía.'}},
+
+{id:'w3', cat:'wands', num:'3', symbol:'♣',
+ es:'Tres de Bastos', en:'Three of Wands', element:'Fuego',
+ desc:'Los planes se ponen en marcha, los proyectos avanzan y el éxito del trabajo previo comienza a hacerse visible.',
+ up:['Proyectos en marcha con resultados prometedores','Expansión de negocios o emprendimientos','Viajes de negocios o expansión internacional','Optimismo fundamentado en trabajo previo sólido','Colaboraciones que dan primeros frutos'],
+ dn:['Retrasos en el retorno de los proyectos','Obstáculos en la expansión planificada','Frustración por resultados que tardan','Asociaciones que no rinden lo esperado','Planes que necesitan revisión'],
+ how:{amor:'La relación se expande hacia un futuro compartido con confianza.',trabajo:'Los proyectos que lanzaste comienzan a dar sus primeros frutos.',salud:'El esfuerzo sostenido en la salud comienza a mostrar resultados.',espiritual:'La siembra espiritual constante comienza a florecer y dar frutos.'}},
+
+{id:'w4', cat:'wands', num:'4', symbol:'♣',
+ es:'Cuatro de Bastos', en:'Four of Wands', element:'Fuego',
+ desc:'Celebra los logros con alegría compartida. La carta de las celebraciones, el hogar feliz y la dicha comunitaria.',
+ up:['Celebración de logros y momentos de alegría','Hogar armonioso y base estable','Bodas, graduaciones o eventos importantes','Comunidad, pertenencia y lazos sólidos','Recompensa bien merecida por el esfuerzo'],
+ dn:['Celebraciones incompletas o insatisfactorias','Inestabilidad en el hogar o la familia','Conflictos en momentos que deberían ser alegres','Transición de hogar o mudanza complicada','Falta de reconocimiento en los logros propios'],
+ how:{amor:'Celebra y honra lo que han construido juntos en pareja.',trabajo:'Un logro importante merece ser celebrado con el equipo.',salud:'La alegría y la celebración son medicina preventiva del alma.',espiritual:'La gratitud compartida multiplica la abundancia y la alegría.'}},
+
+{id:'w5', cat:'wands', num:'5', symbol:'♣',
+ es:'Cinco de Bastos', en:'Five of Wands', element:'Fuego',
+ desc:'El caos de la competencia y el conflicto. Energías que chocan, ideas que se contraponen.',
+ up:['Competencia intensa y energía en conflicto','Debates, discusiones y desacuerdos productivos','Caos temporal que precede al orden','Lucha por el liderazgo o el reconocimiento','Desafíos que fortalecen y ponen a prueba'],
+ dn:['Conflictos evitados pero no resueltos','Competencia desleal o agresividad','Caos que se vuelve inmanejable','Conflictos internos y falta de dirección','Energía dispersa que sabotea los objetivos'],
+ how:{amor:'El conflicto en la relación puede ser creativo si se canaliza bien.',trabajo:'La competencia activa lo mejor de ti; úsala como impulso.',salud:'El caos interno se manifiesta en tensión física; encuentra el orden.',espiritual:'Los conflictos internos resueltos crean una mayor integración del ser.'}},
+
+{id:'w6', cat:'wands', num:'6', symbol:'♣',
+ es:'Seis de Bastos', en:'Six of Wands', element:'Fuego',
+ desc:'El triunfo reconocido: la llegada victoriosa, el aplauso merecido y el liderazgo ganado con esfuerzo.',
+ up:['Victoria pública y reconocimiento merecido','Éxito tras una lucha difícil','Liderazgo natural y carismático','Noticias positivas sobre proyectos','Autoconfianza elevada por los logros'],
+ dn:['Orgullo herido o triunfo no reconocido','Retrasos en el reconocimiento esperado','Fracaso temporal después de una victoria','Arrogancia o exceso de confianza peligroso','Derrota tras un período de éxito'],
+ how:{amor:'Tu confianza y éxito hacen que el amor florezca naturalmente.',trabajo:'El éxito y el reconocimiento público llegan de manera merecida.',salud:'La confianza en el proceso de sanación acelera la recuperación.',espiritual:'El reconocimiento de tus logros espirituales inspira a otros a crecer.'}},
+
+{id:'w7', cat:'wands', num:'7', symbol:'♣',
+ es:'Siete de Bastos', en:'Seven of Wands', element:'Fuego',
+ desc:'En la cima defendiéndose de quienes quieren desplazarlo. Perseverancia bajo presión y defensa de la posición.',
+ up:['Defensa de la posición alcanzada con valentía','Perseverancia ante la oposición','Competencia que pone a prueba el valor','Mantener el terreno ganado','Confianza propia que supera las dificultades'],
+ dn:['Rendirse ante la presión o el agotamiento','Sentirse abrumado por la oposición','Ceder terreno innecesariamente','Falta de confianza para defender las propias ideas','Batallas innecesarias que consumen energía'],
+ how:{amor:'Defiende lo que has construido en la relación con convicción.',trabajo:'Tu posición de liderazgo es desafiada; defiéndela con integridad.',salud:'La perseverancia en los hábitos saludables a pesar de la resistencia.',espiritual:'Defiende tus convicciones espirituales frente a las críticas externas.'}},
+
+{id:'w8', cat:'wands', num:'8', symbol:'♣',
+ es:'Ocho de Bastos', en:'Eight of Wands', element:'Fuego',
+ desc:'La energía en pleno vuelo: eventos que se aceleran, comunicaciones rápidas y progreso veloz.',
+ up:['Acciones rápidas y movimiento acelerado','Comunicaciones, viajes y noticias que llegan pronto','Energía intensa que impulsa los proyectos','Progreso acelerado hacia las metas','Todo sucede al mismo tiempo'],
+ dn:['Retrasos frustrantes en planes y viajes','Comunicaciones confusas o erróneas','Precipitación que genera errores','Energía desbordada sin dirección','Proyectos que se atascan al momento de avanzar'],
+ how:{amor:'Las cosas avanzan rápido en la relación; mantente presente.',trabajo:'El momento de actuar con rapidez y decisión es AHORA.',salud:'La energía alta facilita los cambios de hábitos que planeabas.',espiritual:'Las sincronías y señales espirituales llegan en rápida sucesión.'}},
+
+{id:'w9', cat:'wands', num:'9', symbol:'♣',
+ es:'Nueve de Bastos', en:'Nine of Wands', element:'Fuego',
+ desc:'Un guerrero cansado que no abandona. Las heridas son visibles, pero la determinación para llegar a la meta es inquebrantable.',
+ up:['Resiliencia y perseverancia ante el agotamiento','Defensa de lo que se ha construido','Guardia alta después de experiencias duras','Sabiduría nacida de las batallas superadas','Un último esfuerzo antes de alcanzar la meta'],
+ dn:['Agotamiento extremo que no puede ignorarse','Paranoia o desconfianza excesiva','Rigidez que impide recibir ayuda','Rendirse cuando la meta estaba cerca','Heridas emocionales que aún no han sanado'],
+ how:{amor:'La relación ha pasado por mucho; ¿vale la pena un esfuerzo más?',trabajo:'Estás casi en la meta; no te rindas ahora cuando más te necesitas.',salud:'El agotamiento es real; el descanso es parte del camino a la meta.',espiritual:'El guerrero espiritual avanza herido pero sin rendirse jamás.'}},
+
+{id:'w10', cat:'wands', num:'10', symbol:'♣',
+ es:'Diez de Bastos', en:'Ten of Wands', element:'Fuego',
+ desc:'La carga del éxito: demasiadas responsabilidades. Avanza con dificultad hacia la meta, agobiado pero decidido.',
+ up:['Sobrecarga de responsabilidades','Esfuerzo final antes de llegar a la meta','Carga pesada que se lleva con determinación','Éxito acompañado de mucho trabajo','Necesidad de delegar y repartir las cargas'],
+ dn:['Colapso por exceso de trabajo o estrés','Liberarse de cargas y responsabilidades ajenas','Delegación necesaria que ya no puede postergarse','Burnout severo que exige una pausa urgente','Abandono de compromisos insostenibles'],
+ how:{amor:'¿Las responsabilidades externas están aplastando la relación?',trabajo:'Delega; nadie puede cargar solo con tanto sin eventualmente colapsar.',salud:'El burnout es una señal seria de tu cuerpo que no puedes ignorar.',espiritual:'Soltar las cargas ajenas es un acto de amor propio y conciencia.'}},
+
+{id:'wP', cat:'wands', num:'Paje', symbol:'♣',
+ es:'Paje de Bastos', en:'Page of Wands', element:'Fuego',
+ desc:'El mensajero de la energía y la aventura. Trae noticias emocionantes y encarna el entusiasmo juvenil.',
+ up:['Noticias emocionantes o nuevas oportunidades','Entusiasmo, aventura y energía juvenil','Inicio de un viaje físico o interno','Creatividad espontánea y espíritu explorador','Curiosidad y apertura ante lo desconocido'],
+ dn:['Malas noticias o retrasos en proyectos','Energía dispersa sin foco ni dirección','Impulsividad que genera problemas','Proyectos iniciados pero nunca terminados','Falta de motivación'],
+ how:{amor:'Una relación llena de aventura, novedad y energía fresca.',trabajo:'Una oportunidad emocionante que requiere acción valiente e inmediata.',salud:'Canaliza esa energía salvaje hacia hábitos de salud transformadores.',espiritual:'El entusiasmo espiritual es el primer paso del camino; cultívalo bien.'}},
+
+{id:'wK', cat:'wands', num:'Caballero', symbol:'♣',
+ es:'Caballero de Bastos', en:'Knight of Wands', element:'Fuego',
+ desc:'Galopa con pasión y entusiasmo hacia nuevas aventuras. Brillante y a veces imprudente.',
+ up:['Acción audaz, aventurera y apasionada','Energía desbordante que inspira a los demás','Cambios rápidos y viajes inesperados','Liderazgo carismático y espíritu pionero','Coraje para emprender sin garantías'],
+ dn:['Impulsividad sin reflexión','Frivolidad, arrogancia o comportamiento errático','Emprender sin preparación ni estrategia','Energía que se quema demasiado rápido','Comenzar muchas cosas sin terminar ninguna'],
+ how:{amor:'Una relación apasionada y aventurera que nunca aburre.',trabajo:'Lidera con audacia y creatividad; las reglas son para romperlas.',salud:'La energía es alta pero canalízala; el exceso también agota.',espiritual:'El fuego del espíritu te impulsa hacia nuevos horizontes del ser.'}},
+
+{id:'wQ', cat:'wands', num:'Reina', symbol:'♣',
+ es:'Reina de Bastos', en:'Queen of Wands', element:'Fuego',
+ desc:'La líder carismática y creativa: independiente, apasionada y capaz de inspirar a quienes la rodean.',
+ up:['Liderazgo carismático, seguro y apasionado','Independencia y confianza en sí misma','Creatividad poderosa y energía vital alta','Carisma magnético y presencia impactante','Equilibrio entre vida doméstica y ambición'],
+ dn:['Necesidad de validación externa excesiva','Celos, posesividad o comportamiento dominante','Energía que se convierte en agresividad','Inseguridad oculta bajo una fachada de fuerza','Manipulación a través del carisma'],
+ how:{amor:'Tu energía solar y tu confianza atraen el amor magnéticamente.',trabajo:'Tu carisma y creatividad hacen que todos te quieran en el equipo.',salud:'Tu energía vital es un don; protégela y dirige su poderoso flujo.',espiritual:'La llama de tu espíritu ilumina el camino para muchos más.'}},
+
+{id:'wR', cat:'wands', num:'Rey', symbol:'♣',
+ es:'Rey de Bastos', en:'King of Wands', element:'Fuego',
+ desc:'El visionario emprendedor: un líder nato que inspira con su visión y lleva sus proyectos a la grandeza.',
+ up:['Liderazgo visionario y emprendimiento exitoso','Energía vital plena, carisma y magnetismo','Capacidad de inspirar y motivar grandes equipos','Proyectos de gran envergadura llevados al éxito','Generosidad, nobleza y espíritu de mentor'],
+ dn:['Autoritarismo, impulsividad o tiranía','Visión sin ejecución práctica','Arrogancia que aleja a colaboradores','Energía descontrolada que destruye en vez de crear','Líder que no escucha ni acepta consejos'],
+ how:{amor:'Un amor apasionado, generoso y que inspira el crecimiento mutuo.',trabajo:'Tu visión visionaria y tu capacidad de inspirar son tu mayor activo.',salud:'El fuego interior que te impulsa necesita también tierra y descanso.',espiritual:'El líder espiritual que inspira a otros a través de su propio ejemplo.'}},
+];
+
+// ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+const CAT_COLORS = {
+  cups:  {bg:'var(--cups-g)', accent:'var(--cups-c)', label:'♥ Copas · Cups'},
+  pents: {bg:'var(--pents-g)',accent:'var(--pents-c)',label:'♦ Oros · Pentacles'},
+  swords:{bg:'var(--swords-g)',accent:'var(--swords-c)',label:'♠ Espadas · Swords'},
+  wands: {bg:'var(--wands-g)',accent:'var(--wands-c)',label:'♣ Bastos · Wands'},
+  major: {bg:'var(--major-g)',accent:'var(--major-c)',label:'★ Arcano Mayor'},
+};
+
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+function showSection(id) {
+  ['home','cards','practice'].forEach(s => {
+    document.getElementById('section-'+s).classList.toggle('hidden', s !== id);
+  });
+  document.querySelectorAll('.nav-btn').forEach((b,i) => {
+    const ids = ['home','cards','practice'];
+    b.classList.toggle('active', ids[i] === id);
+  });
+  if (id === 'cards') renderGrid('all');
+  window.scrollTo(0,0);
+}
+
+function goToCategory(cat) {
+  showSection('cards');
+  filterCat(cat);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CARDS GRID
+// ═══════════════════════════════════════════════════════════════
+let currentCat = 'all';
+function filterCat(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
+  renderGrid(cat);
+}
+
+function renderGrid(cat) {
+  const grid = document.getElementById('cardsGrid');
+  const filtered = cat === 'all' ? CARDS : CARDS.filter(c => c.cat === cat);
+  grid.innerHTML = filtered.map(c => `
+    <div class="card-tile" data-cat="${c.cat}" onclick="openModal('${c.id}')">
+      <div class="ct-symbol">${c.symbol}</div>
+      <div class="ct-num">${c.num}</div>
+      <div class="ct-name">${c.es}</div>
+      <div class="ct-en">${c.en}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════════════
+function openModal(id) {
+  const c = CARDS.find(x => x.id === id);
+  if (!c) return;
+  const theme = CAT_COLORS[c.cat];
+
+  const badge = document.getElementById('modalBadge');
+  badge.textContent = theme.label;
+  badge.style.background = theme.bg;
+  badge.style.color = '#fff';
+
+  document.getElementById('modalNum').textContent = c.cat === 'major' ? `Arcano ${c.num}` : `${c.num} · ${c.element}`;
+  document.getElementById('modalTitle').textContent = c.es;
+  document.getElementById('modalEn').textContent = c.en;
+  document.getElementById('modalElement').textContent = c.element + (c.cat === 'major' ? '' : ' · Arcano Menor');
+  document.getElementById('modalDesc').textContent = c.desc;
+
+  document.getElementById('modalUp').innerHTML = c.up.map(m => `<li>✦ ${m}</li>`).join('');
+  document.getElementById('modalDn').innerHTML = c.dn.map(m => `<li>⬇ ${m}</li>`).join('');
+
+  const ctxIcons = {amor:'❤', trabajo:'⚙', salud:'✿', espiritual:'✦'};
+  const ctxLabels = {amor:'AMOR', trabajo:'TRABAJO', salud:'SALUD', espiritual:'ESPIRITUAL'};
+  document.getElementById('modalHow').innerHTML = Object.entries(c.how).map(([k,v]) => `
+    <div class="how-ctx">
+      <div class="how-ctx-label">${ctxIcons[k] || '•'} ${ctxLabels[k] || k.toUpperCase()}</div>
+      <div class="how-ctx-text">${v}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// ═══════════════════════════════════════════════════════════════
+// SEARCH
+// ═══════════════════════════════════════════════════════════════
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+// ── normalise: strip accents, lowercase ──
+function norm(s) {
+  return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+}
+
+// Alias map: what the user types → what to match against
+const ALIASES = {
+  // suits ES/EN
+  'copas':'cups','copa':'cups',
+  'oros':'pents','oro':'pents','pentacles':'pents','pentaculos':'pents','pentagrama':'pents','monedas':'pents',
+  'espadas':'swords','espada':'swords',
+  'bastos':'wands','basto':'wands','varas':'wands','vara':'wands',
+  // court cards
+  'paje':'paje','page':'paje','sota':'paje',
+  'caballero':'caballero','knight':'caballero',
+  'reina':'reina','queen':'reina',
+  'rey':'rey','king':'rey',
+  // major arcana names EN → ES fragments
+  'fool':'loco','magician':'mago','priestess':'sacerdotisa','empress':'emperatriz',
+  'emperor':'emperador','hierophant':'hierofante','lovers':'enamorados',
+  'chariot':'carro','strength':'fuerza','hermit':'ermitano',
+  'wheel':'rueda','fortune':'fortuna','justice':'justicia',
+  'hanged':'colgado','death':'muerte','temperance':'templanza',
+  'devil':'diablo','tower':'torre','star':'estrella',
+  'moon':'luna','sun':'sol','judgement':'juicio','judgment':'juicio','world':'mundo',
+  // numbers EN
+  'ace':'as','two':'2','three':'3','four':'4','five':'5',
+  'six':'6','seven':'7','eight':'8','nine':'9','ten':'10',
+  // numbers ES
+  'uno':'as','dos':'2','tres':'3','cuatro':'4','cinco':'5',
+  'seis':'6','siete':'7','ocho':'8','nueve':'9','diez':'10',
+  'as':'as',
+  // misc
+  'mayor':'major','mayores':'major','arcano':'major','arcanos':'major',
+  'menor':'minor','menores':'minor',
+  'loco':'loco','fool':'loco',
+};
+
+function resolveQuery(raw) {
+  const n = norm(raw);
+  // Try to resolve known aliases first
+  for (const [alias, target] of Object.entries(ALIASES)) {
+    if (n === norm(alias)) return target;
+  }
+  return n;
+}
+
+function searchCards(raw) {
+  if (!raw.trim()) return [];
+
+  const ql = norm(raw);
+  // Also resolve aliases for richer matching
+  const resolved = resolveQuery(raw);
+
+  return CARDS.filter(c => {
+    const esN   = norm(c.es);
+    const enN   = norm(c.en);
+    const catN  = c.cat.toLowerCase();
+    const numN  = norm(c.num);
+    const elemN = norm(c.element);
+    const descN = norm(c.desc);
+    const upN   = norm(c.up.join(' '));
+    const dnN   = norm(c.dn.join(' '));
+    // how context text
+    const howN  = norm(Object.values(c.how || {}).join(' '));
+
+    // All text combined for broad match
+    const all = [esN, enN, catN, numN, elemN, descN, upN, dnN, howN].join(' ');
+
+    // Direct match on name (highest priority — checked first)
+    if (esN.includes(ql) || enN.includes(ql)) return true;
+
+    // Category match
+    if (ql === 'cups'  && catN === 'cups')   return true;
+    if (ql === 'pents' && catN === 'pents')  return true;
+    if (ql === 'swords'&& catN === 'swords') return true;
+    if (ql === 'wands' && catN === 'wands')  return true;
+    if (ql === 'major' && catN === 'major')  return true;
+
+    // Resolved alias match
+    if (resolved !== ql) {
+      if (esN.includes(resolved) || enN.includes(resolved) || all.includes(resolved)) return true;
+      if (resolved === 'cups'   && catN === 'cups')   return true;
+      if (resolved === 'pents'  && catN === 'pents')  return true;
+      if (resolved === 'swords' && catN === 'swords') return true;
+      if (resolved === 'wands'  && catN === 'wands')  return true;
+      if (resolved === 'major'  && catN === 'major')  return true;
+      // Court card match
+      if (['paje','caballero','reina','rey'].includes(resolved) && numN === resolved) return true;
+      // Number match e.g. "as","2","3"
+      if (numN === resolved) return true;
+    }
+
+    // Number match (typed directly)
+    if (numN === ql) return true;
+
+    // Broad content match
+    if (all.includes(ql)) return true;
+
+    return false;
+  })
+  // Sort: exact name matches first
+  .sort((a, b) => {
+    const aN = norm(a.es).startsWith(ql) || norm(a.en).startsWith(ql) ? 0 : 1;
+    const bN = norm(b.es).startsWith(ql) || norm(b.en).startsWith(ql) ? 0 : 1;
+    return aN - bN;
+  })
+  .slice(0, 10);
+}
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value;
+  if (!q.trim()) { searchResults.classList.remove('open'); return; }
+  const results = searchCards(q);
+  if (!results.length) {
+    searchResults.innerHTML = '<div class="no-results">No se encontraron cartas — prueba: "loco", "the fool", "copas", "muerte"…</div>';
+  } else {
+    searchResults.innerHTML = results.map(c => {
+      const theme = CAT_COLORS[c.cat];
+      return `<div class="search-item" onclick="openSearchResult('${c.id}')">
+        <span class="si-badge" style="background:${theme.bg};color:#fff">${c.symbol}</span>
+        <div>
+          <div class="si-name">${c.es}</div>
+          <div class="si-en">${c.en} · ${theme.label}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  searchResults.classList.add('open');
+});
+
+function openSearchResult(id) {
+  searchResults.classList.remove('open');
+  searchInput.value = '';
+  openModal(id);
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-search')) searchResults.classList.remove('open');
+});
+
+// ═══════════════════════════════════════════════════════════════
+// QUIZ ENGINE
+// ═══════════════════════════════════════════════════════════════
+let quizQuestions = [];
+let quizIdx = 0;
+let quizCorrect = 0;
+let quizMissed = [];
+let quizAnswered = false;
+let quizPool = [];
+
+function getPool(cat) {
+  return cat === 'all' ? CARDS : CARDS.filter(c => c.cat === cat);
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function buildQuestions(pool, mode, pos, qty, diff) {
+  const positions = pos === 'both' ? ['up','dn'] : [pos];
+  let qs = [];
+
+  pool.forEach(card => {
+    positions.forEach(p => {
+      const meanings = p === 'up' ? card.up : card.dn;
+      // Pick one meaning as the question target
+      const meaning = meanings[Math.floor(Math.random()*meanings.length)];
+      qs.push({ card, pos: p, meaning, mode });
+    });
+  });
+
+  qs = shuffle(qs);
+  if (qty !== 'all') qs = qs.slice(0, parseInt(qty));
+
+  // Build answer options
+  return qs.map(q => {
+    const numOpts = parseInt(diff);
+    // Wrong options: other cards
+    const others = shuffle(CARDS.filter(c => c.id !== q.card.id)).slice(0, numOpts-1);
+    let opts;
+
+    if (q.mode === 'name2meaning') {
+      // Show name, pick correct meaning group
+      const wrongMeanings = others.map(c => {
+        const m = q.pos === 'up' ? c.up : c.dn;
+        return {text: m[Math.floor(Math.random()*m.length)], id: c.id};
+      });
+      opts = shuffle([{text: q.meaning, id: q.card.id, correct: true}, ...wrongMeanings.map(w => ({...w, correct: false}))]);
+    } else {
+      // Show meaning, pick correct name
+      opts = shuffle([
+        {text: q.card.es + ' / ' + q.card.en, id: q.card.id, correct: true},
+        ...others.map(c => ({text: c.es + ' / ' + c.en, id: c.id, correct: false}))
+      ]);
+    }
+    return { ...q, opts };
+  });
+}
+
+function startQuiz(missedOnly = false) {
+  const cat    = document.getElementById('cfgCat').value;
+  const pos    = document.getElementById('cfgPos').value;
+  const mode   = document.getElementById('cfgMode').value;
+  const diff   = document.getElementById('cfgDiff').value;
+  const qty    = document.getElementById('cfgQty').value;
+
+  const pool = missedOnly ? quizMissed.map(id => CARDS.find(c=>c.id===id)).filter(Boolean) : getPool(cat);
+  if (!pool.length) { alert('No hay cartas en esta categoría'); return; }
+
+  quizPool = pool;
+  quizQuestions = buildQuestions(pool, mode, pos, qty, diff);
+  quizIdx = 0; quizCorrect = 0; quizMissed = []; quizAnswered = false;
+
+  document.getElementById('practiceConfig').style.display = 'block';
+  document.getElementById('quizArea').classList.add('active');
+  document.getElementById('resultsArea').classList.remove('active');
+
+  renderQuestion();
+}
+
+function retryMissed() {
+  if (!quizMissed.length) { alert('¡No fallaste ninguna carta!'); return; }
+  startQuiz(true);
+}
+
+function renderQuestion() {
+  const q = quizQuestions[quizIdx];
+  const total = quizQuestions.length;
+
+  document.getElementById('progressFill').style.width = `${(quizIdx/total)*100}%`;
+  document.getElementById('progressText').textContent = `${quizIdx+1} / ${total}`;
+  document.getElementById('quizScore').textContent = `✦ ${quizCorrect}`;
+
+  const modeLabel = q.mode === 'name2meaning' ? '¿Qué significa esta carta?' : '¿Qué carta es?';
+  document.getElementById('quizModeLabel').textContent = modeLabel;
+
+  const posBadge = document.getElementById('quizPosBadge');
+  if (q.pos === 'up') {
+    posBadge.textContent = '⬆ Al Derecho · Upright';
+    posBadge.className = 'quiz-pos-badge up';
+  } else {
+    posBadge.textContent = '⬇ Invertida · Reversed';
+    posBadge.className = 'quiz-pos-badge dn';
+  }
+
+  if (q.mode === 'name2meaning') {
+    document.getElementById('quizQuestion').textContent = q.card.es;
+    document.getElementById('quizSubQ').textContent = q.card.en + ' · ' + q.card.element;
+    document.getElementById('quizMeaning').classList.add('hidden');
+  } else {
+    document.getElementById('quizQuestion').textContent = '¿Qué carta tiene este significado?';
+    document.getElementById('quizSubQ').textContent = '';
+    const meaningEl = document.getElementById('quizMeaning');
+    meaningEl.textContent = q.meaning;
+    meaningEl.classList.remove('hidden');
+  }
+
+  const optsEl = document.getElementById('quizOptions');
+  optsEl.innerHTML = q.opts.map((o,i) => `
+    <button class="quiz-opt" onclick="selectOpt(${i})">${o.text}</button>
+  `).join('');
+
+  document.getElementById('quizFeedback').className = 'quiz-feedback';
+  document.getElementById('nextBtn').className = 'next-btn';
+  quizAnswered = false;
+}
+
+function selectOpt(idx) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+
+  const q = quizQuestions[quizIdx];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(b => b.disabled = true);
+
+  const chosen = q.opts[idx];
+  const feedback = document.getElementById('quizFeedback');
+
+  if (chosen.correct) {
+    opts[idx].classList.add('correct');
+    quizCorrect++;
+    feedback.textContent = '✦ ¡Correcto! Excelente conocimiento del Tarot.';
+    feedback.className = 'quiz-feedback show correct-fb';
+  } else {
+    opts[idx].classList.add('wrong');
+    // Highlight correct
+    q.opts.forEach((o,i) => { if (o.correct) opts[i].classList.add('correct'); });
+    quizMissed.push(q.card.id);
+    const correctText = q.opts.find(o=>o.correct).text;
+    feedback.textContent = `✕ Incorrecto. La respuesta correcta es: "${correctText}"`;
+    feedback.className = 'quiz-feedback show wrong-fb';
+  }
+
+  document.getElementById('quizScore').textContent = `✦ ${quizCorrect}`;
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+
+function nextQuestion() {
+  quizIdx++;
+  if (quizIdx >= quizQuestions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('quizArea').classList.remove('active');
+  const resultsArea = document.getElementById('resultsArea');
+  resultsArea.classList.add('active');
+
+  const total = quizQuestions.length;
+  const pct = Math.round((quizCorrect/total)*100);
+  document.getElementById('resultsScore').textContent = `${quizCorrect} / ${total}`;
+
+  let msg = '';
+  if (pct === 100) msg = '¡Perfecto! Eres un maestro del Tarot. 🌟';
+  else if (pct >= 80) msg = '¡Excelente! Tu conocimiento del Tarot es muy sólido.';
+  else if (pct >= 60) msg = 'Buen trabajo. Sigue practicando con las cartas que fallaste.';
+  else if (pct >= 40) msg = 'Vas por buen camino. La práctica constante es la clave.';
+  else msg = 'El Tarot requiere práctica y dedicación. ¡No te rindas!';
+  document.getElementById('resultsMsg').textContent = msg + ` (${pct}%)`;
+
+  const missedEl = document.getElementById('resultsMissed');
+  if (quizMissed.length) {
+    const unique = [...new Set(quizMissed)];
+    missedEl.innerHTML = `
+      <div class="results-missed-title">CARTAS A REPASAR (${unique.length}):</div>
+      <div class="missed-list">
+        ${unique.map(id => {
+          const c = CARDS.find(x=>x.id===id);
+          return c ? `<div class="missed-item">${c.symbol} ${c.es} · <em>${c.en}</em></div>` : '';
+        }).join('')}
+      </div>`;
+  } else {
+    missedEl.innerHTML = '<div style="color:var(--gold);text-align:center;font-family:Cinzel">★ ¡Sin errores! Excelente dominio.</div>';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+renderGrid('all');
+</script>
+</body>
+</html>
